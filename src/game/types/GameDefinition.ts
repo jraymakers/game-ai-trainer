@@ -1,5 +1,5 @@
-import type { JsonObject } from 'src/generalPurpose/types/Json';
-import type { Result } from 'src/generalPurpose/types/Result';
+import type { JsonObject } from '../../generalPurpose/types/Json';
+import type { Result } from '../../generalPurpose/types/Result';
 
 export type GameDefinition<
   TConfig extends JsonObject = JsonObject,

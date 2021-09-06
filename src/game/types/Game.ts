@@ -1,4 +1,4 @@
-import type { JsonObject } from 'src/generalPurpose/types/Json';
+import type { JsonObject } from '../../generalPurpose/types/Json';
 
 export abstract class Game<
   TConfig extends JsonObject = JsonObject,

@@ -1,4 +1,4 @@
-import type { NamedEntity } from 'src/generalPurpose/types/Entity';
+import type { NamedEntity } from '../../generalPurpose/types/Entity';
 
 export type Player = NamedEntity & Readonly<{
 }>;

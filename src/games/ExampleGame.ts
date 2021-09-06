@@ -1,18 +1,18 @@
 import type {
   SingleLoserGameReport, SingleWinnerGameReport
-} from 'src/game/types/GameReports';
+} from '../game/types/GameReports';
 import {
   MultiplayerGame,
   MultiplayerGameConfig,
   MultiplayerGameState
-} from 'src/game/types/MultiplayerGame';
+} from '../game/types/MultiplayerGame';
 
 export type ExampleGameConfig = MultiplayerGameConfig & Readonly<{
   initialValue: number;
   targetValue: number;
   minDelta: number;
   maxDelta: number;
-  misere: number;
+  misere: boolean;
 }>;
 
 export type ExampleGameState = MultiplayerGameState & Readonly<{
@@ -32,20 +32,20 @@ export class ExampleGame extends MultiplayerGame<
   ExampleGameReport
 > {
 
-  protected override createInitialState(): ExampleGameState {
+  protected createInitialState(): ExampleGameState {
     return {
       currentPlayerIndex: 0,
       currentValue: this.config.initialValue,
     };
   }
 
-  public override isLegalAction(action: ExampleGameAction): boolean {
+  public isLegalAction(action: ExampleGameAction): boolean {
     const { minDelta, maxDelta } = this.config;
     const { delta } = action;
     return minDelta <= delta && delta <= maxDelta;
   }
 
-  public override newStateForLegalAction(action: ExampleGameAction): ExampleGameState {
+  public newStateForLegalAction(action: ExampleGameAction): ExampleGameState {
     const { currentValue } = this.state;
     const { delta } = action;
     return {
@@ -54,15 +54,15 @@ export class ExampleGame extends MultiplayerGame<
     };
   }
 
-  public override isComplete(): boolean {
+  public isComplete(): boolean {
     return this.state.currentValue === this.config.targetValue;
   }
 
-  public override getReportForGameIncomplete(): ExampleGameReport {
+  public getReportForGameIncomplete(): ExampleGameReport {
     return {};
   }
 
-  public override getReportForGameComplete(): ExampleGameReport {
+  public getReportForGameComplete(): ExampleGameReport {
     const { misere } = this.config;
     const { currentPlayerIndex } = this.state;
     if (misere) {
