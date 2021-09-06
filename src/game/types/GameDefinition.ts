@@ -1,34 +1,15 @@
-import type { NamedEntity } from 'src/generalPurpose/types/Entity';
 import type { JsonObject } from 'src/generalPurpose/types/Json';
-
-export type GameError = Readonly<{
-  message: string;
-}>;
-
-export type Player = NamedEntity & Readonly<{
-}>;
-
-export type Players = readonly Player[];
-
-export type PlayerScores = readonly number[];
-
-export type BaseGameConfig = JsonObject & Readonly<{
-  players: Players;
-}>;
-
-export type BaseGameState<TConfig extends BaseGameConfig = BaseGameConfig> = JsonObject & Readonly<{
-  config: TConfig;
-}>;
+import type { Result } from 'src/generalPurpose/types/Result';
 
 export type GameDefinition<
-  TConfig extends BaseGameConfig = BaseGameConfig,
-  TState extends BaseGameState<TConfig> = BaseGameState<TConfig>,
+  TConfig extends JsonObject = JsonObject,
+  TState extends JsonObject = JsonObject,
   TAction extends JsonObject = JsonObject,
+  TReport extends JsonObject = JsonObject,
 > = Readonly<{
-  displayName: string;
-  createInitialState: (config: TConfig) => TState | GameError;
-  isLegalAction: (state: TState, action: TAction) => boolean;
-  performAction: (state: TState, action: TAction) => TState | GameError;
-  isCompleted: (state: TState) => boolean;
-  getPlayerScores: (state: TState) => PlayerScores;
+  createInitialState: (config: TConfig) => Result<TState>;
+  isLegalAction: (config: TConfig, state: TState, action: TAction) => boolean;
+  performAction: (config: TConfig, state: TState, action: TAction) => Result<TState>;
+  isComplete: (config: TConfig, state: TState) => boolean;
+  getReport: (config: TConfig, state: TState) => TReport;
 }>;
