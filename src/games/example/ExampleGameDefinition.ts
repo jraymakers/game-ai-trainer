@@ -1,10 +1,10 @@
-import type { GameDefinition } from '../game/types/GameDefinition';
-import type { SingleLoserGameReport, SingleWinnerGameReport } from '../game/types/GameReports';
+import type { GameDefinition } from '../../game/types/GameDefinition';
+import type { SingleLoserGameReport, SingleWinnerGameReport } from '../../game/types/GameReports';
 import type {
   CurrentPlayerGameState,
   MultiplayerGameConfig
-} from '../game/types/MultiplayerGameTypes';
-import { err, ok } from '../generalPurpose/types/Result';
+} from '../../game/types/MultiplayerGameTypes';
+import { err, ok } from '../../generalPurpose/types/Result';
 
 export type ExampleGameConfig = MultiplayerGameConfig & Readonly<{
   initialValue: number;

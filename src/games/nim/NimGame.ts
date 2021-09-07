@@ -1,5 +1,5 @@
-import type { SingleLoserGameReport, SingleWinnerGameReport } from '../game/types/GameReports';
-import { MultiplayerGame, MultiplayerGameConfig, MultiplayerGameState } from '../game/types/MultiplayerGame';
+import type { SingleLoserGameReport, SingleWinnerGameReport } from '../../game/types/GameReports';
+import { MultiplayerGame, MultiplayerGameConfig, MultiplayerGameState } from '../../game/types/MultiplayerGame';
 
 export type NimRows = readonly number[];
 

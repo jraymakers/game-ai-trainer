@@ -1,10 +1,10 @@
-import type { JsonObject } from '../generalPurpose/types/Json';
-import type { GameDefinition } from '../game/types/GameDefinition2';
-import type { SingleLoserGameReport, SingleWinnerGameReport } from '../game/types/GameReports';
+import type { JsonObject } from '../../generalPurpose/types/Json';
+import type { GameDefinition } from '../../game/types/GameDefinition2';
+import type { SingleLoserGameReport, SingleWinnerGameReport } from '../../game/types/GameReports';
 import type {
   CurrentPlayerGameState,
   MultiplayerGameConfig
-} from '../game/types/MultiplayerGameTypes';
+} from '../../game/types/MultiplayerGameTypes';
 
 export type ExampleGameConfig = JsonObject & MultiplayerGameConfig & Readonly<{
   initialValue: number;

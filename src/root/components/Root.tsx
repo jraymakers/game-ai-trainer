@@ -1,12 +1,16 @@
 import React, { useCallback, useState } from 'react';
-import type { GameDefinition } from '../../game/types/GameDefinition2';
-import { NimGameDefinition } from '../../games/NimGameDefinition2';
+import { gameCatalog } from '../../gameCatalog/constants/gameCatalog';
+import type { GameRegistration } from '../../gameCatalog/types/GameRegistration';
+import { GameSelector } from '../../gameSelection/components/GameSelector';
 import type { JsonObject } from '../../generalPurpose/types/Json';
 
 export const Root: React.FC = () => {
-  const [gameDefinition, setGameDefinition] = useState<GameDefinition | null>(null);
-  const handleSelectGame = useCallback(() => {
-    setGameDefinition(NimGameDefinition);
+  const [selectedGame, setSelectedGame] = useState<GameRegistration | null>(null);
+  const handleSelectGame = useCallback((gameRegistration: GameRegistration) => {
+    setSelectedGame(gameRegistration);
+  }, []);
+  const handleClearSelectedGame = useCallback(() => {
+    setSelectedGame(null);
   }, []);
 
   const [gameConfig, setGameConfig] = useState<JsonObject | null>(null);
@@ -21,28 +25,29 @@ export const Root: React.FC = () => {
 
   const [gameState, setGameState] = useState<JsonObject | null>(null);
   const handleStartGame = useCallback(() => {
-    if (gameDefinition && gameConfig) {
-      setGameState(gameDefinition.createInitialState(gameConfig));
+    if (selectedGame && gameConfig) {
+      setGameState(selectedGame.definition.createInitialState(gameConfig));
     }
-  }, [gameDefinition, gameConfig]);
+  }, [selectedGame, gameConfig]);
 
   const handleTakeTurn = useCallback(() => {
-    if (gameDefinition && gameConfig && gameState) {
+    if (selectedGame && gameConfig && gameState) {
       const action = {
         rowIndex: 0,
         itemsToRemove: 1,
       };
-      setGameState(gameDefinition.getStateAfterAction(gameConfig, gameState, action));
+      setGameState(selectedGame.definition.getStateAfterAction(gameConfig, gameState, action));
     }
-  }, [gameDefinition, gameConfig, gameState]);
+  }, [selectedGame, gameConfig, gameState]);
 
   return (
     <div>
       <div>Game AI Trainer</div>
       <div>
-        {gameDefinition ? (
+        {selectedGame ? (
           <div>
-            <div>Game selected</div>
+            <div>Selected Game: {selectedGame.displayName}</div>
+            <div><button onClick={handleClearSelectedGame}>Clear Selected Game</button></div>
             <div>
               {gameConfig ? (
                 <div>
@@ -68,9 +73,9 @@ export const Root: React.FC = () => {
             </div>
           </div>
         ) : (
-          <button onClick={handleSelectGame}>Select Game</button>
+          <GameSelector games={gameCatalog} onSelectGame={handleSelectGame} />
         )}
       </div>
     </div>
   );
-}
+};

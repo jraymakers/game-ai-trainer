@@ -1,11 +1,11 @@
 import type {
   SingleLoserGameReport, SingleWinnerGameReport
-} from '../game/types/GameReports';
+} from '../../game/types/GameReports';
 import {
   MultiplayerGame,
   MultiplayerGameConfig,
   MultiplayerGameState
-} from '../game/types/MultiplayerGame';
+} from '../../game/types/MultiplayerGame';
 
 export type ExampleGameConfig = MultiplayerGameConfig & Readonly<{
   initialValue: number;
