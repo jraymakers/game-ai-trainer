@@ -36,7 +36,7 @@ export class NimGame extends MultiplayerGame<
   public isLegalAction(action: NimGameAction): boolean {
     const { currentRows } = this.state;
     const { rowIndex, itemsToRemove } = action;
-    return 0 <= rowIndex && rowIndex < currentRows.length && currentRows[rowIndex] <= itemsToRemove;
+    return 0 <= rowIndex && rowIndex < currentRows.length && itemsToRemove <= currentRows[rowIndex];
   }
 
   public newStateForLegalAction(action: NimGameAction): NimGameState {
