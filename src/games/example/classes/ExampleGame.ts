@@ -1,29 +1,8 @@
-import type {
-  SingleLoserGameReport, SingleWinnerGameReport
-} from '../../game/types/GameReports';
-import {
-  MultiplayerGame,
-  MultiplayerGameConfig,
-  MultiplayerGameState
-} from '../../game/types/MultiplayerGame';
-
-export type ExampleGameConfig = MultiplayerGameConfig & Readonly<{
-  initialValue: number;
-  targetValue: number;
-  minDelta: number;
-  maxDelta: number;
-  misere: boolean;
-}>;
-
-export type ExampleGameState = MultiplayerGameState & Readonly<{
-  currentValue: number;
-}>;
-
-export type ExampleGameAction = Readonly<{
-  delta: number;
-}>;
-
-export type ExampleGameReport = SingleWinnerGameReport | SingleLoserGameReport | {};
+import { MultiplayerGame } from '../../../game/classes/MultiplayerGame';
+import type { ExampleGameAction } from '../types/ExampleGameAction';
+import type { ExampleGameConfig } from '../types/ExampleGameConfig';
+import type { ExampleGameReport } from '../types/ExampleGameReport';
+import type { ExampleGameState } from '../types/ExampleGameState';
 
 export class ExampleGame extends MultiplayerGame<
   ExampleGameConfig,

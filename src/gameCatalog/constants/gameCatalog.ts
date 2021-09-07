@@ -1,5 +1,5 @@
-import { ExampleGameDefinition } from '../../games/example/ExampleGameDefinition2';
-import { NimGameDefinition } from '../../games/nim/NimGameDefinition2';
+import { ExampleGameDefinition } from '../../games/example/constants/ExampleGameDefinition2';
+import { NimGameDefinition } from '../../games/nim/constants/NimGameDefinition2';
 import type { GameRegistration } from '../types/GameRegistration';
 
 export const gameCatalog: readonly GameRegistration[] = [

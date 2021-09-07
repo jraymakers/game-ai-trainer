@@ -1,5 +1,5 @@
-import type { GameDefinition } from '../game/types/GameDefinition';
-import { ok } from '../generalPurpose/types/Result';
+import type { GameDefinition } from '../../../game/types/GameDefinition';
+import { ok } from '../../../generalPurpose/types/Result';
 
 export const emptyGame: GameDefinition = {
   createInitialState: (config) => ok({}),

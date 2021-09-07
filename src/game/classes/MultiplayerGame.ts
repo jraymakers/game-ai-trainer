@@ -1,17 +1,11 @@
 import type { JsonObject } from '../../generalPurpose/types/Json';
+import type { CurrentPlayerGameState } from '../types/CurrentPlayerGameState';
+import type { MultiplayerGameConfig } from '../types/MultiplayerGameConfig';
 import { Game } from './Game';
-
-export type MultiplayerGameConfig = Readonly<{
-  playerIds: readonly string[];
-}>;
-
-export type MultiplayerGameState = Readonly<{
-  currentPlayerIndex: number;
-}>;
 
 export abstract class MultiplayerGame<
   TConfig extends MultiplayerGameConfig = MultiplayerGameConfig,
-  TState extends MultiplayerGameState = MultiplayerGameState,
+  TState extends CurrentPlayerGameState = CurrentPlayerGameState,
   TAction extends JsonObject = JsonObject,
   TReport extends JsonObject = JsonObject,
 > extends Game<TConfig, TState, TAction, TReport> {

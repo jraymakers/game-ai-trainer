@@ -1,28 +1,8 @@
-import type { GameDefinition } from '../../game/types/GameDefinition';
-import type { SingleLoserGameReport, SingleWinnerGameReport } from '../../game/types/GameReports';
-import type {
-  CurrentPlayerGameState,
-  MultiplayerGameConfig
-} from '../../game/types/MultiplayerGameTypes';
-import { err, ok } from '../../generalPurpose/types/Result';
-
-export type ExampleGameConfig = MultiplayerGameConfig & Readonly<{
-  initialValue: number;
-  targetValue: number;
-  minDelta: number;
-  maxDelta: number;
-  misere: boolean;
-}>;
-
-export type ExampleGameState = CurrentPlayerGameState & Readonly<{
-  currentValue: number;
-}>;
-
-export type ExampleGameAction = Readonly<{
-  delta: number;
-}>;
-
-export type ExampleGameReport = SingleWinnerGameReport | SingleLoserGameReport | {};
+import type { GameDefinition } from '../../../game/types/GameDefinition2';
+import type { ExampleGameAction } from '../types/ExampleGameAction';
+import type { ExampleGameConfig } from '../types/ExampleGameConfig';
+import type { ExampleGameReport } from '../types/ExampleGameReport';
+import type { ExampleGameState } from '../types/ExampleGameState';
 
 export const ExampleGameDefinition: GameDefinition<
   ExampleGameConfig,
@@ -31,14 +11,19 @@ export const ExampleGameDefinition: GameDefinition<
   ExampleGameReport
 > = {
 
+  isLegalConfig: (config) => {
+    return config.playerIds.length > 0;
+  },
+
   createInitialState: (config) => {
-    if (config.playerIds.length > 0) {
-      return err(new Error('There must be at least one player!'));
+    if (ExampleGameDefinition.isLegalConfig(config)) {
+      return {
+        currentPlayerIndex: 0,
+        currentValue: config.initialValue,
+      };
+    } else {
+      throw new Error('Invalid configuration!');
     }
-    return ok({
-      currentPlayerIndex: 0,
-      currentValue: config.initialValue,
-    });
   },
 
   isLegalAction: (config, state, action) => {
@@ -47,16 +32,16 @@ export const ExampleGameDefinition: GameDefinition<
     return minDelta <= delta && delta <= maxDelta;
   },
 
-  performAction: (config, state, action) => {
+  getStateAfterAction: (config, state, action) => {
     if (ExampleGameDefinition.isLegalAction(config, state, action)) {
       const { currentPlayerIndex, currentValue } = state;
       const { delta } = action;
-      return ok({
+      return {
         currentPlayerIndex: (currentPlayerIndex + 1) % config.playerIds.length,
         currentValue: currentValue + delta,
-      });
+      };
     } else {
-      return err(new Error('Illegal action!'));
+      return state;
     }
   },
 

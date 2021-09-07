@@ -1,23 +1,8 @@
-import type { SingleLoserGameReport, SingleWinnerGameReport } from '../../game/types/GameReports';
-import { MultiplayerGame, MultiplayerGameConfig, MultiplayerGameState } from '../../game/types/MultiplayerGame';
-
-export type NimRows = readonly number[];
-
-export type NimGameConfig = MultiplayerGameConfig & Readonly<{
-  initialRows: NimRows;
-  misere: boolean;
-}>;
-
-export type NimGameState = MultiplayerGameState & Readonly<{
-  currentRows: NimRows;
-}>;
-
-export type NimGameAction = Readonly<{
-  rowIndex: number;
-  itemsToRemove: number;
-}>;
-
-export type NimGameReport = SingleWinnerGameReport | SingleLoserGameReport | {};
+import { MultiplayerGame } from '../../../game/classes/MultiplayerGame';
+import type { NimGameConfig } from '../types/NiimGameConfig';
+import type { NimGameAction } from '../types/NimGameAction';
+import type { NimGameReport } from '../types/NimGameReport';
+import type { NimGameState } from '../types/NimGameState';
 
 export class NimGame extends MultiplayerGame<
   NimGameConfig,
