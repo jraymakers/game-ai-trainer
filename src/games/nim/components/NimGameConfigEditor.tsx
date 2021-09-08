@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { GameConfigEditorProps } from '../../../gameCatalog/types/GameRegistration';
 import type { NimGameConfig } from '../types/NimGameConfig';
 import type { NimRows } from '../types/NimRows';
@@ -58,7 +58,7 @@ const RowConfigEntry: React.FC<{
   );
 };
 
-export const NimGameConfigEditor: React.FC<GameConfigEditorProps<NimGameConfig>> = ({
+export const NimGameConfigEditor: React.FC<GameConfigEditorProps> = ({
   onSubmit,
   onCancel,
 }) => {
@@ -94,11 +94,12 @@ export const NimGameConfigEditor: React.FC<GameConfigEditorProps<NimGameConfig>>
   }, [misere]);
 
   const handleSubmit = useCallback(() => {
-    onSubmit({
+    const gameConfig: NimGameConfig = {
       playerIds,
       initialRows,
       misere,
-    });
+    };
+    onSubmit(gameConfig);
   }, [playerIds, initialRows, misere]);
 
   return (

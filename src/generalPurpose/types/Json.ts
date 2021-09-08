@@ -37,4 +37,3 @@ export type MutableJsonObject = {
 //           ? {readonly [P in keyof T]: Jsonify<T[P]>}
 //           : never
 //     : never;
-
