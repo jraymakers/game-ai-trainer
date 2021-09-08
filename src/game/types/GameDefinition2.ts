@@ -1,11 +1,4 @@
-// import type { JsonObject } from '../generalPurpose/types/Json';
-
-export type GameDefinition<
-  TConfig = any,// extends JsonObject = JsonObject,
-  TState = any,// extends JsonObject = JsonObject,
-  TAction = any,// extends JsonObject = JsonObject,
-  TReport = any// extends JsonObject = JsonObject,
-> = Readonly<{
+export type GameDefinition<TConfig, TState, TAction, TReport> = Readonly<{
   isLegalConfig: (config: TConfig) => boolean;
   createInitialState: (config: TConfig) => TState;
   isLegalAction: (config: TConfig, state: TState, action: TAction) => boolean;

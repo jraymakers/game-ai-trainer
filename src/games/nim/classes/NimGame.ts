@@ -1,5 +1,5 @@
 import { MultiplayerGame } from '../../../game/classes/MultiplayerGame';
-import type { NimGameConfig } from '../types/NiimGameConfig';
+import type { NimGameConfig } from '../types/NimGameConfig';
 import type { NimGameAction } from '../types/NimGameAction';
 import type { NimGameReport } from '../types/NimGameReport';
 import type { NimGameState } from '../types/NimGameState';

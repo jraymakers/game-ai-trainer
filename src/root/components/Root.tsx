@@ -14,19 +14,13 @@ export const Root: React.FC = () => {
   }, []);
 
   const [gameConfig, setGameConfig] = useState<JsonObject | null>(null);
-  const handleSubmitGameConfig = useCallback((gameConfig: JsonObject) => {
-    if (selectedGame) {
-      setGameConfig(gameConfig);
-      setGameState(selectedGame.definition.createInitialState(gameConfig));
-    }
-  }, []);
-
   const [gameState, setGameState] = useState<JsonObject | null>(null);
-  const handleStartGame = useCallback(() => {
-    if (selectedGame && gameConfig) {
-      setGameState(selectedGame.definition.createInitialState(gameConfig));
+  const handleSubmitGameConfig = useCallback((newGameConfig: JsonObject) => {
+    if (selectedGame) {
+      setGameConfig(newGameConfig);
+      setGameState(selectedGame.definition.createInitialState(newGameConfig));
     }
-  }, [selectedGame, gameConfig]);
+  }, [selectedGame]);
 
   const handleTakeTurn = useCallback(() => {
     if (selectedGame && gameConfig && gameState) {
@@ -44,35 +38,30 @@ export const Root: React.FC = () => {
       <div>
         {selectedGame ? (
           <div>
-            <div>Configure Game: {selectedGame.displayName}</div>
-            <div>
-              {gameConfig ? (
+            {gameConfig && gameState ? (
+              <div>
+                <div>Active Game: {selectedGame.displayName}</div>
                 <div>
-                  <div>
-                    <pre>{JSON.stringify(gameConfig, null, 2)}</pre>
-                  </div>
-                  <div>
-                    {gameState ? (
-                      <div>
-                        <pre>{JSON.stringify(gameState, null, 2)}</pre>
-                        <div>
-                          <button onClick={handleTakeTurn}>Take Turn</button>
-                        </div>
-                      </div>
-                    ) : (
-                      <button onClick={handleStartGame}>Start Game</button>
-                    )}
-                  </div>
+                  <pre>{JSON.stringify(gameConfig, null, 2)}</pre>
                 </div>
-              ) : selectedGame.configEditor ? (
+                <div>
+                  <pre>{JSON.stringify(gameState, null, 2)}</pre>
+                </div>
+                <div>
+                  <button onClick={handleTakeTurn}>Take Turn</button>
+                </div>
+              </div>
+            ) : selectedGame.configEditor ? (
+              <div>
+                <div>Configure Game: {selectedGame.displayName}</div>
                 <selectedGame.configEditor
                   onSubmit={handleSubmitGameConfig}
                   onCancel={handleClearSelectedGame}
                 />
-              ) : (
-                <div>No config editor</div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div>No config editor</div>
+            )}
           </div>
         ) : (
           <GameSelector games={gameCatalog} onSelectGame={handleSelectGame} />

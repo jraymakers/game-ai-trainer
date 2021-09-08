@@ -1,14 +1,13 @@
 import type React from 'react';
 import type { GameDefinition } from '../../game/types/GameDefinition2';
-import type { JsonObject } from '../../generalPurpose/types/Json';
 
-export type GameConfigEditorProps = Readonly<{
-  onSubmit: (gameConfig: JsonObject) => void;
+export type GameConfigEditorProps<TConfig> = Readonly<{
+  onSubmit: (gameConfig: TConfig) => void;
   onCancel: () => void;
 }>;
 
-export type GameRegistration = Readonly<{
+export type GameRegistration<TConfig=any,TState=any,TAction=any,TResult=any> = Readonly<{
   displayName: string;
-  definition: GameDefinition;
-  configEditor?: React.ComponentType<GameConfigEditorProps>;
+  definition: GameDefinition<TConfig,TState,TAction,TResult>;
+  configEditor?: React.ComponentType<GameConfigEditorProps<TConfig>>;
 }>;
