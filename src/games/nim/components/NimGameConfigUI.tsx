@@ -1,64 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import type { GameConfigEditorProps } from '../../../game/types/GameConfigEditorProps';
+import type { GameConfigUIProps } from '../../../game/types/GameConfigUIProps';
 import type { NimGameConfig } from '../types/NimGameConfig';
 import type { NimRows } from '../types/NimRows';
+import { RowConfigEntry } from './NimRowConfigUI';
+import { PlayerConfigUI } from './PlayerConfigUI';
 
-const PlayerConfigEntry: React.FC<{
-  playerId: string;
-  onChangePlayerId: (playerId: string, newValue: string) => void;
-  onRemovePlayerId?: (playerId: string) => void;
-}> = ({
-  playerId,
-  onChangePlayerId,
-  onRemovePlayerId,
-}) => {
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    onChangePlayerId(playerId, e.target.value);
-  }, [playerId, onChangePlayerId]);
-  const handleRemove = useCallback(() => {
-    if (onRemovePlayerId) {
-      onRemovePlayerId(playerId);
-    }
-  }, [playerId, onRemovePlayerId]);
-  return (
-    <div>
-      <input type="text" onChange={handleChange} value={playerId} />
-      {onRemovePlayerId ? <button onClick={handleRemove}>Remove</button> : null}
-    </div>
-  );
-};
-
-const RowConfigEntry: React.FC<{
-  rowIndex: number;
-  rowItemCount: number;
-  onChangeRowItemCount: (rowIndexToChange: number, newValue: number) => void;
-  onRemoveRow?: (rowIndex: number) => void;
-}> = ({
-  rowIndex,
-  rowItemCount,
-  onChangeRowItemCount,
-  onRemoveRow,
-}) => {
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseInt(e.target.value, 10);
-    if (newValue >= 1) {
-      onChangeRowItemCount(rowIndex, newValue);
-    }
-  }, [rowIndex, onChangeRowItemCount]);
-  const handleRemove = useCallback(() => {
-    if (onRemoveRow) {
-      onRemoveRow(rowIndex);
-    }
-  }, [rowIndex, onRemoveRow]);
-  return (
-    <div>
-      <input type="number" onChange={handleChange} value={rowItemCount} />
-      {onRemoveRow ? <button onClick={handleRemove}>Remove</button> : null}
-    </div>
-  );
-};
-
-export const NimGameConfigEditor: React.FC<GameConfigEditorProps<NimGameConfig>> = ({
+export const NimGameConfigUI: React.FC<GameConfigUIProps<NimGameConfig>> = ({
   onSubmit,
   onCancel,
 }) => {
@@ -108,7 +55,7 @@ export const NimGameConfigEditor: React.FC<GameConfigEditorProps<NimGameConfig>>
         <div>Player Ids</div>
         <div>
           {playerIds.map((playerId, index) =>
-            <PlayerConfigEntry
+            <PlayerConfigUI
               key={index}
               playerId={playerId}
               onChangePlayerId={handleChangePlayerId}

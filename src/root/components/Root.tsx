@@ -41,8 +41,8 @@ export const Root: React.FC = () => {
         {selectedGame ? (
           <div>
             {gameConfig && gameState ? (
-              selectedGame.ui ? (
-                <selectedGame.ui
+              selectedGame.gameUI ? (
+                <selectedGame.gameUI
                   config={gameConfig}
                   state={gameState}
                   onAction={handleGameAction}
@@ -60,10 +60,10 @@ export const Root: React.FC = () => {
               </div>
               )
             ) : (
-              selectedGame.configEditor ? (
+              selectedGame.configUI ? (
                 <div>
                   <div>Configure Game: {selectedGame.displayName}</div>
-                  <selectedGame.configEditor
+                  <selectedGame.configUI
                     onSubmit={handleSubmitGameConfig}
                     onCancel={handleClearSelectedGame}
                   />
