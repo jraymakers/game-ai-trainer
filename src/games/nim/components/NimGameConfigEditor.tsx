@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import type { GameConfigEditorProps } from '../../../gameCatalog/types/GameRegistration';
+import type { GameConfigEditorProps } from '../../../game/types/GameConfigEditorProps';
 import type { NimGameConfig } from '../types/NimGameConfig';
 import type { NimRows } from '../types/NimRows';
 

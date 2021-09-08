@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import type { GameRegistration } from '../../gameCatalog/types/GameRegistration';
+import type { GameRegistration } from '../../game/types/GameRegistration';
 
 export const GameSelectionOption: React.FC<{
   game: GameRegistration;

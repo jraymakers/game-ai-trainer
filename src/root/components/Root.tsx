@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
+import type { GameRegistration } from '../../game/types/GameRegistration';
 import { gameCatalog } from '../../gameCatalog/constants/gameCatalog';
-import type { GameRegistration } from '../../gameCatalog/types/GameRegistration';
 import { GameSelector } from '../../gameSelection/components/GameSelector';
 import type { JsonObject } from '../../generalPurpose/types/Json';
 
