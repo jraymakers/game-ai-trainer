@@ -58,7 +58,7 @@ const RowConfigEntry: React.FC<{
   );
 };
 
-export const NimGameConfigEditor: React.FC<GameConfigEditorProps> = ({
+export const NimGameConfigEditor: React.FC<GameConfigEditorProps<NimGameConfig>> = ({
   onSubmit,
   onCancel,
 }) => {
