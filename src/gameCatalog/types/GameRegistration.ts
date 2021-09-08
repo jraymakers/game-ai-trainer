@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { GameDefinition } from '../../game/types/GameDefinition2';
+import type { GameDefinition } from '../../game/types/GameDefinition';
 import type { JsonObject } from '../../generalPurpose/types/Json';
 
 export type GameConfigEditorProps<TConfig> = Readonly<{
