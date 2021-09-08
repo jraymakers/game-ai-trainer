@@ -14,13 +14,11 @@ export const Root: React.FC = () => {
   }, []);
 
   const [gameConfig, setGameConfig] = useState<JsonObject | null>(null);
-  const handleConfigureGame = useCallback(() => {
-    const config = {
-      playerIds: ['player1', 'player2'],
-      initialRows: [3, 5, 7],
-      misere: true,
-    };
-    setGameConfig(config);
+  const handleSubmitGameConfig = useCallback((gameConfig: JsonObject) => {
+    if (selectedGame) {
+      setGameConfig(gameConfig);
+      setGameState(selectedGame.definition.createInitialState(gameConfig));
+    }
   }, []);
 
   const [gameState, setGameState] = useState<JsonObject | null>(null);
@@ -46,8 +44,7 @@ export const Root: React.FC = () => {
       <div>
         {selectedGame ? (
           <div>
-            <div>Selected Game: {selectedGame.displayName}</div>
-            <div><button onClick={handleClearSelectedGame}>Clear Selected Game</button></div>
+            <div>Configure Game: {selectedGame.displayName}</div>
             <div>
               {gameConfig ? (
                 <div>
@@ -67,8 +64,13 @@ export const Root: React.FC = () => {
                     )}
                   </div>
                 </div>
+              ) : selectedGame.configEditor ? (
+                <selectedGame.configEditor
+                  onSubmit={handleSubmitGameConfig}
+                  onCancel={handleClearSelectedGame}
+                />
               ) : (
-                <button onClick={handleConfigureGame}>Configure Game</button>
+                <div>No config editor</div>
               )}
             </div>
           </div>

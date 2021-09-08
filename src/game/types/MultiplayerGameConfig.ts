@@ -1,3 +1,3 @@
 export type MultiplayerGameConfig = Readonly<{
-  playerIds: string[];
+  playerIds: readonly string[];
 }>;
