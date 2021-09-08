@@ -12,7 +12,6 @@ export type GameUIProps<TConfig, TState, TAction> = Readonly<{
   state: TState;
   onAction: (action: TAction) => void;
   onLeave: () => void;
-  onEnd: () => void;
 }>;
 
 export type GameRegistration = Readonly<{

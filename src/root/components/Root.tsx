@@ -23,26 +23,16 @@ export const Root: React.FC = () => {
   }, [selectedGame]);
 
   const handleGameAction = useCallback((gameAction: JsonObject) => {
-    console.log(gameAction);
-  }, []);
+    if (selectedGame && gameConfig && gameState) {
+      setGameState(selectedGame.definition.getStateAfterAction(gameConfig, gameState, gameAction));
+    }
+  }, [selectedGame, gameConfig, gameState]);
 
   const handleLeaveGame = useCallback(() => {
-    console.log('leave game');
+    setGameState(null);
+    setGameConfig(null);
+    setSelectedGame(null);
   }, []);
-
-  const handleEndGame = useCallback(() => {
-    console.log('end game');
-  }, []);
-
-  // const handleTakeTurn = useCallback(() => {
-  //   if (selectedGame && gameConfig && gameState) {
-  //     const action = {
-  //       rowIndex: 0,
-  //       itemsToRemove: 1,
-  //     };
-  //     setGameState(selectedGame.definition.getStateAfterAction(gameConfig, gameState, action));
-  //   }
-  // }, [selectedGame, gameConfig, gameState]);
 
   return (
     <div>
@@ -57,7 +47,6 @@ export const Root: React.FC = () => {
                   state={gameState}
                   onAction={handleGameAction}
                   onLeave={handleLeaveGame}
-                  onEnd={handleEndGame}
                 />
               ) : (
               <div>
@@ -68,9 +57,6 @@ export const Root: React.FC = () => {
                 <div>
                   <pre>{JSON.stringify(gameState, null, 2)}</pre>
                 </div>
-                {/* <div>
-                  <button onClick={handleTakeTurn}>Take Turn</button>
-                </div> */}
               </div>
               )
             ) : (
