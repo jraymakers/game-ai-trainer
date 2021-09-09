@@ -1,7 +1,8 @@
 import type { CurrentPlayerGameState } from '../../../game/types/CurrentPlayerGameState';
-import type { SingleWinnerGameState } from '../../../game/types/SingleWinnerGameState';
+import type { TicTacToeGameResult } from './TicTacToeGameResult';
 import type { TicTacToeGrid } from './TicTacToeGrid';
 
-export type TicTacToeGameState = CurrentPlayerGameState & SingleWinnerGameState & Readonly<{
+export type TicTacToeGameState = CurrentPlayerGameState & Readonly<{
   grid: TicTacToeGrid;
+  gameResult: TicTacToeGameResult | null;
 }>;
