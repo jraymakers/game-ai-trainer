@@ -41,12 +41,15 @@ export const Root: React.FC = () => {
         {selectedGame ? (
           <div>
             {gameConfig && gameState ? (
-              <selectedGame.gameUI
-                config={gameConfig}
-                state={gameState}
-                onAction={handleGameAction}
-                onLeave={handleLeaveGame}
-              />
+              <div>
+                <div>Current Game: {selectedGame.displayName}</div>
+                <selectedGame.gameUI
+                  config={gameConfig}
+                  state={gameState}
+                  onAction={handleGameAction}
+                  onLeave={handleLeaveGame}
+                />
+              </div>
             ) : (
               <div>
                 <div>Configure Game: {selectedGame.displayName}</div>

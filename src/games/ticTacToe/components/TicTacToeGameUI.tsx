@@ -16,7 +16,6 @@ export const TicTacToeGameUI: React.FC<GameUIProps<TicTacToeGameConfig, TicTacTo
   }, [onAction]);
   return (
     <div>
-      <div>Tic Tac Toe</div>
       <div>Current Turn: {config.playerIds[state.currentPlayerIndex]}</div>
       <div style={{ cursor: 'pointer', fontSize: '48px', fontFamily: 'monospace' }}>
         {state.grid.map((gridRow, rowIndex) =>
