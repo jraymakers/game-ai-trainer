@@ -1,28 +1,15 @@
 import React, { useCallback, useState } from 'react';
+import { MultiplayerGameConfigUI } from '../../../game/components/MultiplayerGameConfigUI';
 import type { GameConfigUIProps } from '../../../game/types/GameConfigUIProps';
 import type { NimGameConfig } from '../types/NimGameConfig';
 import type { NimRows } from '../types/NimRows';
 import { RowConfigEntry } from './NimRowConfigUI';
-import { PlayerConfigUI } from './PlayerConfigUI';
 
 export const NimGameConfigUI: React.FC<GameConfigUIProps<NimGameConfig>> = ({
   onSubmit,
   onCancel,
 }) => {
   const [playerIds, setPlayerIds] = useState<readonly string[]>(() => ['Player 1', 'Player 2']);
-  const handleChangePlayerId = useCallback((playerIdToChange: string, newValue: string) => {
-    setPlayerIds(playerIds.map(playerId => playerId === playerIdToChange ? newValue : playerId));
-  }, [playerIds]);
-  const handleRemovePlayerId = useCallback((playerIdToRemove: string) => {
-    setPlayerIds(playerIds.filter(playerId => playerId !== playerIdToRemove));
-  }, [playerIds]);
-  const handleAddNewPlayer = useCallback(() => {
-    let i = playerIds.length + 1;
-    while (playerIds.includes(`Player ${i}`)) {
-      i++;
-    }
-    setPlayerIds(playerIds.concat(`Player ${i}`));
-  }, [playerIds]);
   
   const [initialRows, setInitialRows] = useState<NimRows>(() => [3, 5, 7]);
   const handleChangeRowItemCount = useCallback((rowIndexToChange: number, newValue: number) => {
@@ -51,24 +38,9 @@ export const NimGameConfigUI: React.FC<GameConfigUIProps<NimGameConfig>> = ({
 
   return (
     <div>
+      <MultiplayerGameConfigUI playerIds={playerIds} setPlayerIds={setPlayerIds} />
       <div>
-        <div>Player Ids</div>
-        <div>
-          {playerIds.map((playerId, index) =>
-            <PlayerConfigUI
-              key={index}
-              playerId={playerId}
-              onChangePlayerId={handleChangePlayerId}
-              onRemovePlayerId={playerIds.length > 1 ? handleRemovePlayerId : undefined}
-            />
-          )}
-        </div>
-        <div>
-          <button onClick={handleAddNewPlayer}>Add Player</button>
-        </div>
-      </div>
-      <div>
-      <div>Initial Rows</div>
+        <div>Initial Rows</div>
         <div>
           {initialRows.map((rowItemCount, index) =>
             <RowConfigEntry
