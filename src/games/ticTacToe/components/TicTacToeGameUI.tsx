@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import type { GameUIProps } from '../../../game/types/GameUIProps';
+import type { GameUIProps } from '../../../gameUI/types/GameUIProps';
 import type { TicTacToeGameAction } from '../types/TicTacToeGameAction';
 import type { TicTacToeGameConfig } from '../types/TicTacToeGameConfig';
 import type { TicTacToeGameState } from '../types/TicTacToeGameState';

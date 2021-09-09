@@ -1,4 +1,4 @@
-import type { GameDefinition } from '../../../game/types/GameDefinition';
+import type { GameDefinition } from '../../../gameDefinition/types/GameDefinition';
 import { nextIndex } from '../../../generalPurpose/functions/nextIndex';
 import { prevIndex } from '../../../generalPurpose/functions/prevIndex';
 import { getNimGameResult } from '../functions/getNimGameResult';

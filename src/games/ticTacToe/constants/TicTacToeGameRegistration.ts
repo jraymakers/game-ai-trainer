@@ -1,8 +1,8 @@
 import type React from 'react';
-import type { GameConfigUIProps } from '../../../game/types/GameConfigUIProps';
-import type { GameDefinition } from '../../../game/types/GameDefinition';
-import type { GameRegistration } from '../../../game/types/GameRegistration';
-import type { GameUIProps } from '../../../game/types/GameUIProps';
+import type { GameDefinition } from '../../../gameDefinition/types/GameDefinition';
+import type { GameRegistration } from '../../../gameRegistration/types/GameRegistration';
+import type { GameConfigUIProps } from '../../../gameUI/types/GameConfigUIProps';
+import type { GameUIProps } from '../../../gameUI/types/GameUIProps';
 import type { JsonObject } from '../../../generalPurpose/types/Json';
 import { TicTacToeGameConfigUI } from '../components/TicTacToeGameConfigUI';
 import { TicTacToeGameUI } from '../components/TicTacToeGameUI';

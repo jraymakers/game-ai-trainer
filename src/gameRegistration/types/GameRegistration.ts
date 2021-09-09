@@ -1,8 +1,8 @@
 import type React from 'react';
+import type { GameDefinition } from '../../gameDefinition/types/GameDefinition';
+import type { GameConfigUIProps } from '../../gameUI/types/GameConfigUIProps';
+import type { GameUIProps } from '../../gameUI/types/GameUIProps';
 import type { JsonObject } from '../../generalPurpose/types/Json';
-import type { GameConfigUIProps } from './GameConfigUIProps';
-import type { GameDefinition } from './GameDefinition';
-import type { GameUIProps } from './GameUIProps';
 
 export type GameRegistration = Readonly<{
   displayName: string;

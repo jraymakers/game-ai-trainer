@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { MultiplayerGameConfigUI } from '../../../game/components/MultiplayerGameConfigUI';
-import type { GameConfigUIProps } from '../../../game/types/GameConfigUIProps';
+import { MultiplayerGameConfigUI } from '../../../gameUI/components/MultiplayerGameConfigUI';
+import type { GameConfigUIProps } from '../../../gameUI/types/GameConfigUIProps';
 import type { NimGameConfig } from '../types/NimGameConfig';
 import type { NimRows } from '../types/NimRows';
 import { RowConfigEntry } from './NimRowConfigUI';

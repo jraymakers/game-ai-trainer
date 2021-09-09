@@ -1,4 +1,4 @@
-import type { CurrentPlayerGameState } from '../../../game/types/CurrentPlayerGameState';
+import type { CurrentPlayerGameState } from '../../../gameDefinition/types/CurrentPlayerGameState';
 import type { NimGameResult } from './NimGameResult';
 import type { NimRows } from './NimRows';
 

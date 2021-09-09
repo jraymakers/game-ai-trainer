@@ -1,4 +1,4 @@
-import type { GameRegistration } from '../../game/types/GameRegistration';
+import type { GameRegistration } from '../../gameRegistration/types/GameRegistration';
 import { NimGameRegistration } from '../../games/nim/constants/NimGameRegistration';
 import { TicTacToeGameRegistration } from '../../games/ticTacToe/constants/TicTacToeGameRegistration';
 

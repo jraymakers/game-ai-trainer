@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import type { GameUIProps } from '../../../game/types/GameUIProps';
+import type { GameUIProps } from '../../../gameUI/types/GameUIProps';
 import type { NimGameAction } from '../types/NimGameAction';
 import type { NimGameConfig } from '../types/NimGameConfig';
 import type { NimGameState } from '../types/NimGameState';

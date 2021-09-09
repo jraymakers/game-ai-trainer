@@ -1,4 +1,4 @@
-import type { CurrentPlayerGameState } from '../../../game/types/CurrentPlayerGameState';
+import type { CurrentPlayerGameState } from '../../../gameDefinition/types/CurrentPlayerGameState';
 import type { TicTacToeGameResult } from './TicTacToeGameResult';
 import type { TicTacToeGrid } from './TicTacToeGrid';
 

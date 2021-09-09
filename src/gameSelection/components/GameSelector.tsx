@@ -1,5 +1,5 @@
 import React from 'react';
-import type { GameRegistration } from '../../game/types/GameRegistration';
+import type { GameRegistration } from '../../gameRegistration/types/GameRegistration';
 import { GameSelectionOption } from './GameSelectionOption';
 
 export const GameSelector: React.FC<{
