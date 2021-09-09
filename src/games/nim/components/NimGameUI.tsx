@@ -48,7 +48,19 @@ export const NimGameUI: React.FC<GameUIProps<NimGameConfig, NimGameState, NimGam
     setSelection(null);
   }, []);
 
-  if (state.winnerIndex === null) {
+  if (state.gameResult) {
+    return (
+      <div>
+        <div>Game over!</div>
+        <div>Winner: {config.playerIds[state.gameResult.winnerIndex]}</div>
+        <div>
+          <span>
+            <button onClick={onLeave}>Leave Game</button>
+          </span>
+        </div>
+      </div>
+    );
+  } else {
     return (
       <div>
         <div>Win condition: {config.misere ? 'Last move loses' : 'Last move wins'}</div>
@@ -72,18 +84,6 @@ export const NimGameUI: React.FC<GameUIProps<NimGameConfig, NimGameState, NimGam
             <button onClick={handleReset} disabled={!selection}>Reset</button>
           </span>
         </div>
-        <div>
-          <span>
-            <button onClick={onLeave}>Leave Game</button>
-          </span>
-        </div>
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <div>Game over!</div>
-        <div>Winner: {config.playerIds[state.winnerIndex]}</div>
         <div>
           <span>
             <button onClick={onLeave}>Leave Game</button>

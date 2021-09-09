@@ -4,20 +4,21 @@ import { prevIndex } from '../../../generalPurpose/functions/prevIndex';
 import type { NimGameAction } from '../types/NimGameAction';
 import type { NimGameConfig } from '../types/NimGameConfig';
 import type { NimGameReport } from '../types/NimGameReport';
+import type { NimGameResult } from '../types/NimGameResult';
 import type { NimGameState } from '../types/NimGameState';
 import type { NimRows } from '../types/NimRows';
 
-function getNextWinnerIndex(
+function getNextNimGameResult(
   config: NimGameConfig,
   nextRows: NimRows,
   prevCurrentPlayerIndex: number,
   nextCurrentPlayerIndex: number,
-): number | null {
+): NimGameResult | null {
   if (!nextRows.some(rowItemCount => rowItemCount > 0)) {
     if (config.misere) {
-      return nextCurrentPlayerIndex;
+      return { winnerIndex: nextCurrentPlayerIndex }; 
     } else {
-      return prevCurrentPlayerIndex;
+      return { winnerIndex: prevCurrentPlayerIndex };
     }
   }
   return null;
@@ -39,7 +40,7 @@ export const NimGameDefinition: GameDefinition<
       return {
         currentPlayerIndex: 0,
         currentRows: config.initialRows,
-        winnerIndex: null,
+        gameResult: null,
       };
     } else {
       throw new Error('Invalid configuration!');
@@ -62,12 +63,12 @@ export const NimGameDefinition: GameDefinition<
       const nextCurrentRows = currentRows.map(
         (rowItemCount, index) => index === rowIndex ? rowItemCount - itemsToRemove : rowItemCount
       );
-      let nextWinnerIndex = getNextWinnerIndex(
+      const nextGameResult = getNextNimGameResult(
         config, nextCurrentRows, currentPlayerIndex, nextCurrentPlayerIndex);
       return {
         currentPlayerIndex: nextCurrentPlayerIndex,
         currentRows: nextCurrentRows,
-        winnerIndex: nextWinnerIndex,
+        gameResult: nextGameResult,
       };
     } else {
       return state;
