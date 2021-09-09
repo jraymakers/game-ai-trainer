@@ -10,7 +10,7 @@ import { TicTacToeGameDefinition } from './TicTacToeGameDefinition';
 
 export const TicTacToeGameRegistration: GameRegistration = {
   displayName: 'Tic-Tac-Toe',
-  definition: TicTacToeGameDefinition as unknown as GameDefinition<JsonObject, JsonObject, JsonObject, JsonObject>,
+  definition: TicTacToeGameDefinition as unknown as GameDefinition<JsonObject, JsonObject, JsonObject>,
   configUI: TicTacToeGameConfigUI as unknown as React.ComponentType<GameConfigUIProps<JsonObject>>,
   gameUI: TicTacToeGameUI as unknown as React.ComponentType<GameUIProps<JsonObject, JsonObject, JsonObject>>,
 };

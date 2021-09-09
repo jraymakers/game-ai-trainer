@@ -3,14 +3,12 @@ import { nextIndex } from '../../../generalPurpose/functions/nextIndex';
 import { getTicTacToeGameResult } from '../functions/getTicTacToeGameResult';
 import type { TicTacToeGameAction } from '../types/TicTacToeGameAction';
 import type { TicTacToeGameConfig } from '../types/TicTacToeGameConfig';
-import type { TicTacToeGameReport } from '../types/TicTacToeGameReport';
 import type { TicTacToeGameState } from '../types/TicTacToeGameState';
 
 export const TicTacToeGameDefinition: GameDefinition<
   TicTacToeGameConfig,
   TicTacToeGameState,
-  TicTacToeGameAction,
-  TicTacToeGameReport
+  TicTacToeGameAction
 > = {
 
   isLegalConfig: (config) => {
@@ -54,20 +52,6 @@ export const TicTacToeGameDefinition: GameDefinition<
       };
     } else {
       return state;
-    }
-  },
-
-  isComplete: (config, state) => {
-    // todo
-    return false;
-  },
-
-  getReport: (config, state) => {
-    if (TicTacToeGameDefinition.isComplete(config, state)) {
-      // todo
-      return {};
-    } else {
-      return {};
     }
   },
 
