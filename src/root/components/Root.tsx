@@ -41,36 +41,20 @@ export const Root: React.FC = () => {
         {selectedGame ? (
           <div>
             {gameConfig && gameState ? (
-              selectedGame.gameUI ? (
-                <selectedGame.gameUI
-                  config={gameConfig}
-                  state={gameState}
-                  onAction={handleGameAction}
-                  onLeave={handleLeaveGame}
-                />
-              ) : (
-              <div>
-                <div>Active Game: {selectedGame.displayName}</div>
-                <div>
-                  <pre>{JSON.stringify(gameConfig, null, 2)}</pre>
-                </div>
-                <div>
-                  <pre>{JSON.stringify(gameState, null, 2)}</pre>
-                </div>
-              </div>
-              )
+              <selectedGame.gameUI
+                config={gameConfig}
+                state={gameState}
+                onAction={handleGameAction}
+                onLeave={handleLeaveGame}
+              />
             ) : (
-              selectedGame.configUI ? (
-                <div>
-                  <div>Configure Game: {selectedGame.displayName}</div>
-                  <selectedGame.configUI
-                    onSubmit={handleSubmitGameConfig}
-                    onCancel={handleClearSelectedGame}
-                  />
-                </div>
-              ) : (
-                <div>No config editor</div>
-              )
+              <div>
+                <div>Configure Game: {selectedGame.displayName}</div>
+                <selectedGame.configUI
+                  onSubmit={handleSubmitGameConfig}
+                  onCancel={handleClearSelectedGame}
+                />
+              </div>
             )}
           </div>
         ) : (
