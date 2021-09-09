@@ -28,7 +28,7 @@ const NimGameItemUI: React.FC<{
     onClickItem(rowIndex, itemIndex);
   }, [rowIndex, itemIndex, onClickItem]);
   return (
-    <span onClick={handleClickItem}>{selected ? 'X' : 'O'}</span>
+    <span onClick={handleClickItem}>{selected ? 'X' : '•'}</span>
   );
 };
 
@@ -69,6 +69,7 @@ export const NimGameUI: React.FC<GameUIProps<NimGameConfig, NimGameState, NimGam
   onLeave,
 }) => {
   const [selection, setSelection] = useState<NimSelection | null>(null);
+
   const handleClickItem = useCallback((rowIndex: number, itemIndex: number) => {
     if (selection && selection.rowIndex === rowIndex) {
       if (selection.selectedItems[itemIndex]) {
@@ -87,6 +88,7 @@ export const NimGameUI: React.FC<GameUIProps<NimGameConfig, NimGameState, NimGam
       setSelection({ rowIndex, selectedItems: { [itemIndex]: true } });
     }
   }, [selection]);
+
   const handleSubmit = useCallback(() => {
     if (selection) {
       const action: NimGameAction = {
@@ -97,15 +99,17 @@ export const NimGameUI: React.FC<GameUIProps<NimGameConfig, NimGameState, NimGam
       onAction(action);
     }
   }, [selection, onAction]);
+
   const handleReset = useCallback(() => {
     setSelection(null);
   }, []);
+
   return (
     <div>
       <div>Nim</div>
       <div>Win condition: {config.misere ? 'Last move loses' : 'Last move wins'}</div>
       <div>Current Turn: {config.playerIds[state.currentPlayerIndex]}</div>
-      <div>
+      <div style={{ cursor: 'pointer', fontSize: '48px', fontFamily: 'monospace' }}>
         {state.currentRows.map((rowItemCount, rowIndex) =>
           <NimGameRowUI
             key={rowIndex}

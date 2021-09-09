@@ -1,4 +1,6 @@
 import type { GameDefinition } from '../../../game/types/GameDefinition';
+import { nextIndex } from '../../../generalPurpose/functions/nextIndex';
+import { prevIndex } from '../../../generalPurpose/functions/prevIndex';
 import type { NimGameAction } from '../types/NimGameAction';
 import type { NimGameConfig } from '../types/NimGameConfig';
 import type { NimGameReport } from '../types/NimGameReport';
@@ -29,15 +31,17 @@ export const NimGameDefinition: GameDefinition<
   isLegalAction: (config, state, action) => {
     const { currentRows } = state;
     const { rowIndex, itemsToRemove } = action;
-    return 0 <= rowIndex && rowIndex < currentRows.length && itemsToRemove <= currentRows[rowIndex];
+    return 0 <= rowIndex && rowIndex < currentRows.length
+      && 0 < itemsToRemove && itemsToRemove <= currentRows[rowIndex];
   },
 
   getStateAfterAction: (config, state, action) => {
     if (NimGameDefinition.isLegalAction(config, state, action)) {
+      const { playerIds } = config;
       const { currentPlayerIndex, currentRows } = state;
       const { rowIndex, itemsToRemove } = action;
       return {
-        currentPlayerIndex: (currentPlayerIndex + 1) % config.playerIds.length,
+        currentPlayerIndex: nextIndex(currentPlayerIndex, playerIds),
         currentRows: currentRows.map(
           (rowItemCount, index) => index === rowIndex ? rowItemCount - itemsToRemove : rowItemCount
         ),
@@ -55,7 +59,7 @@ export const NimGameDefinition: GameDefinition<
     if (NimGameDefinition.isComplete(config, state)) {
       const { currentPlayerIndex } = state;
       const { playerIds, misere } = config;
-      const previousPlayerIndex = (currentPlayerIndex - 1 + playerIds.length) % playerIds.length;
+      const previousPlayerIndex = prevIndex(currentPlayerIndex, playerIds);
       if (misere) {
         return { losingPlayerIndex: previousPlayerIndex };
       } else {
@@ -64,6 +68,6 @@ export const NimGameDefinition: GameDefinition<
     } else {
       return {};
     }
-  }
+  },
 
 };
