@@ -22,6 +22,7 @@ export const NimGameDefinition: GameDefinition<
       return {
         currentPlayerIndex: 0,
         currentRows: config.initialRows,
+        winnerIndex: null,
       };
     } else {
       throw new Error('Invalid configuration!');
@@ -37,14 +38,25 @@ export const NimGameDefinition: GameDefinition<
 
   getStateAfterAction: (config, state, action) => {
     if (NimGameDefinition.isLegalAction(config, state, action)) {
-      const { playerIds } = config;
+      const { playerIds, misere } = config;
       const { currentPlayerIndex, currentRows } = state;
       const { rowIndex, itemsToRemove } = action;
+      const newCurrentPlayerIndex = nextIndex(currentPlayerIndex, playerIds);
+      const newCurrentRows = currentRows.map(
+        (rowItemCount, index) => index === rowIndex ? rowItemCount - itemsToRemove : rowItemCount
+      );
+      let newWinnerIndex = null;
+      if (!newCurrentRows.some(rowItemCount => rowItemCount > 0)) {
+        if (misere) {
+          newWinnerIndex = newCurrentPlayerIndex;
+        } else {
+          newWinnerIndex = currentPlayerIndex;
+        }
+      }
       return {
-        currentPlayerIndex: nextIndex(currentPlayerIndex, playerIds),
-        currentRows: currentRows.map(
-          (rowItemCount, index) => index === rowIndex ? rowItemCount - itemsToRemove : rowItemCount
-        ),
+        currentPlayerIndex: newCurrentPlayerIndex,
+        currentRows: newCurrentRows,
+        winnerIndex: newWinnerIndex,
       };
     } else {
       return state;

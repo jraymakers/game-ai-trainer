@@ -48,34 +48,48 @@ export const NimGameUI: React.FC<GameUIProps<NimGameConfig, NimGameState, NimGam
     setSelection(null);
   }, []);
 
-  return (
-    <div>
-      <div>Win condition: {config.misere ? 'Last move loses' : 'Last move wins'}</div>
-      <div>Current Turn: {config.playerIds[state.currentPlayerIndex]}</div>
-      <div style={{ cursor: 'pointer', fontSize: '48px', fontFamily: 'monospace' }}>
-        {state.currentRows.map((rowItemCount, rowIndex) =>
-          <NimRowUI
-            key={rowIndex}
-            rowIndex={rowIndex}
-            rowItemCount={rowItemCount}
-            selectedItems={selection && selection.rowIndex === rowIndex ? selection.selectedItems : null}
-            onClickItem={handleClickItem}
-          />
-        )}
-      </div>
+  if (state.winnerIndex === null) {
+    return (
       <div>
-        <span>
-          <button onClick={handleSubmit} disabled={!selection}>Submit</button>
-        </span>
-        <span>
-          <button onClick={handleReset} disabled={!selection}>Reset</button>
-        </span>
+        <div>Win condition: {config.misere ? 'Last move loses' : 'Last move wins'}</div>
+        <div>Current Turn: {config.playerIds[state.currentPlayerIndex]}</div>
+        <div style={{ cursor: 'pointer', fontSize: '48px', fontFamily: 'monospace' }}>
+          {state.currentRows.map((rowItemCount, rowIndex) =>
+            <NimRowUI
+              key={rowIndex}
+              rowIndex={rowIndex}
+              rowItemCount={rowItemCount}
+              selectedItems={selection && selection.rowIndex === rowIndex ? selection.selectedItems : null}
+              onClickItem={handleClickItem}
+            />
+          )}
+        </div>
+        <div>
+          <span>
+            <button onClick={handleSubmit} disabled={!selection}>Submit</button>
+          </span>
+          <span>
+            <button onClick={handleReset} disabled={!selection}>Reset</button>
+          </span>
+        </div>
+        <div>
+          <span>
+            <button onClick={onLeave}>Leave Game</button>
+          </span>
+        </div>
       </div>
+    );
+  } else {
+    return (
       <div>
-        <span>
-          <button onClick={onLeave}>Leave Game</button>
-        </span>
+        <div>Game over!</div>
+        <div>Winner: {config.playerIds[state.winnerIndex]}</div>
+        <div>
+          <span>
+            <button onClick={onLeave}>Leave Game</button>
+          </span>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
