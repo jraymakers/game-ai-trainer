@@ -11,48 +11,29 @@ export const NimGameDefinition: GameDefinition<
   NimGameAction
 > = {
 
-  isLegalConfig: (config) => {
-    return config.playerIds.length > 0;
-  },
-
   createInitialState: (config) => {
-    if (NimGameDefinition.isLegalConfig(config)) {
-      return {
-        currentPlayerIndex: 0,
-        currentRows: config.initialRows,
-        gameResult: null,
-      };
-    } else {
-      throw new Error('Invalid configuration!');
-    }
-  },
-
-  isLegalAction: (config, state, action) => {
-    const { currentRows } = state;
-    const { rowIndex, itemsToRemove } = action;
-    return 0 <= rowIndex && rowIndex < currentRows.length
-      && 0 < itemsToRemove && itemsToRemove <= currentRows[rowIndex];
+    return {
+      currentPlayerIndex: 0,
+      currentRows: config.initialRows,
+      gameResult: null,
+    };
   },
 
   getStateAfterAction: (config, state, action) => {
-    if (NimGameDefinition.isLegalAction(config, state, action)) {
-      const { playerIds } = config;
-      const { currentPlayerIndex, currentRows } = state;
-      const { rowIndex, itemsToRemove } = action;
-      const nextCurrentPlayerIndex = nextIndex(currentPlayerIndex, playerIds);
-      const nextCurrentRows = currentRows.map(
-        (rowItemCount, index) => index === rowIndex ? rowItemCount - itemsToRemove : rowItemCount
-      );
-      const nextGameResult = getNimGameResult(
-        config, nextCurrentRows, currentPlayerIndex, nextCurrentPlayerIndex);
-      return {
-        currentPlayerIndex: nextCurrentPlayerIndex,
-        currentRows: nextCurrentRows,
-        gameResult: nextGameResult,
-      };
-    } else {
-      return state;
-    }
+    const { playerIds } = config;
+    const { currentPlayerIndex, currentRows } = state;
+    const { rowIndex, itemsToRemove } = action;
+    const nextCurrentPlayerIndex = nextIndex(currentPlayerIndex, playerIds);
+    const nextCurrentRows = currentRows.map(
+      (rowItemCount, index) => index === rowIndex ? rowItemCount - itemsToRemove : rowItemCount
+    );
+    const nextGameResult = getNimGameResult(
+      config, nextCurrentRows, currentPlayerIndex, nextCurrentPlayerIndex);
+    return {
+      currentPlayerIndex: nextCurrentPlayerIndex,
+      currentRows: nextCurrentRows,
+      gameResult: nextGameResult,
+    };
   },
 
 };
