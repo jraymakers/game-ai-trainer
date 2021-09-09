@@ -5,6 +5,23 @@ import type { NimGameAction } from '../types/NimGameAction';
 import type { NimGameConfig } from '../types/NimGameConfig';
 import type { NimGameReport } from '../types/NimGameReport';
 import type { NimGameState } from '../types/NimGameState';
+import type { NimRows } from '../types/NimRows';
+
+function getNextWinnerIndex(
+  config: NimGameConfig,
+  nextRows: NimRows,
+  prevCurrentPlayerIndex: number,
+  nextCurrentPlayerIndex: number,
+): number | null {
+  if (!nextRows.some(rowItemCount => rowItemCount > 0)) {
+    if (config.misere) {
+      return nextCurrentPlayerIndex;
+    } else {
+      return prevCurrentPlayerIndex;
+    }
+  }
+  return null;
+}
 
 export const NimGameDefinition: GameDefinition<
   NimGameConfig,
@@ -38,25 +55,19 @@ export const NimGameDefinition: GameDefinition<
 
   getStateAfterAction: (config, state, action) => {
     if (NimGameDefinition.isLegalAction(config, state, action)) {
-      const { playerIds, misere } = config;
+      const { playerIds } = config;
       const { currentPlayerIndex, currentRows } = state;
       const { rowIndex, itemsToRemove } = action;
-      const newCurrentPlayerIndex = nextIndex(currentPlayerIndex, playerIds);
-      const newCurrentRows = currentRows.map(
+      const nextCurrentPlayerIndex = nextIndex(currentPlayerIndex, playerIds);
+      const nextCurrentRows = currentRows.map(
         (rowItemCount, index) => index === rowIndex ? rowItemCount - itemsToRemove : rowItemCount
       );
-      let newWinnerIndex = null;
-      if (!newCurrentRows.some(rowItemCount => rowItemCount > 0)) {
-        if (misere) {
-          newWinnerIndex = newCurrentPlayerIndex;
-        } else {
-          newWinnerIndex = currentPlayerIndex;
-        }
-      }
+      let nextWinnerIndex = getNextWinnerIndex(
+        config, nextCurrentRows, currentPlayerIndex, nextCurrentPlayerIndex);
       return {
-        currentPlayerIndex: newCurrentPlayerIndex,
-        currentRows: newCurrentRows,
-        winnerIndex: newWinnerIndex,
+        currentPlayerIndex: nextCurrentPlayerIndex,
+        currentRows: nextCurrentRows,
+        winnerIndex: nextWinnerIndex,
       };
     } else {
       return state;

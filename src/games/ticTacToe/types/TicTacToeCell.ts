@@ -1,1 +1,1 @@
-export type TicTacToeCell = number | null; // player index or null
+export type TicTacToeCell = number | null; // player index or empty

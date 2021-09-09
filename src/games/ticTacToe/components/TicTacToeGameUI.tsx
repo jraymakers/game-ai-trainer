@@ -14,29 +14,43 @@ export const TicTacToeGameUI: React.FC<GameUIProps<TicTacToeGameConfig, TicTacTo
   const handleCellClick = useCallback((row: number, col: number) => {
     onAction({ row, col });
   }, [onAction]);
-  return (
-    <div>
-      <div>Current Turn: {config.playerIds[state.currentPlayerIndex]}</div>
-      <div style={{ cursor: 'pointer', fontSize: '48px', fontFamily: 'monospace' }}>
-        {state.grid.map((gridRow, rowIndex) =>
-          <div key={rowIndex}>
-            {gridRow.map((cell, cellIndex) =>
-              <TicTacToeCellUI
-                key={cellIndex}
-                row={rowIndex}
-                col={cellIndex}
-                value={cell != null ? config.playerIds[cell] : '•'}
-                onClick={handleCellClick}
-              />
-            )}
-          </div>
-        )}
-      </div>
+  if (state.winnerIndex === null) {
+    return (
       <div>
-        <span>
-          <button onClick={onLeave}>Leave Game</button>
-        </span>
+        <div>Current Turn: {config.playerIds[state.currentPlayerIndex]}</div>
+        <div style={{ cursor: 'pointer', fontSize: '48px', fontFamily: 'monospace' }}>
+          {state.grid.map((gridRow, rowIndex) =>
+            <div key={rowIndex}>
+              {gridRow.map((cell, cellIndex) =>
+                <TicTacToeCellUI
+                  key={cellIndex}
+                  row={rowIndex}
+                  col={cellIndex}
+                  value={cell != null ? config.playerIds[cell] : '•'}
+                  onClick={handleCellClick}
+                />
+              )}
+            </div>
+          )}
+        </div>
+        <div>
+          <span>
+            <button onClick={onLeave}>Leave Game</button>
+          </span>
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div>
+        <div>Game over!</div>
+        <div>Winner: {config.playerIds[state.winnerIndex]}</div>
+        <div>
+          <span>
+            <button onClick={onLeave}>Leave Game</button>
+          </span>
+        </div>
+      </div>
+    );
+  }
 };
