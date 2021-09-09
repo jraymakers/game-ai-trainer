@@ -17,7 +17,12 @@ export const TicTacToeGameConfigUI: React.FC<GameConfigUIProps<TicTacToeGameConf
 
   return (
     <div>
-      <MultiplayerGameConfigUI playerIds={playerIds} setPlayerIds={setPlayerIds} />
+      <MultiplayerGameConfigUI
+        playerIds={playerIds}
+        setPlayerIds={setPlayerIds}
+        minPlayerCount={2}
+        maxPlayerCount={2}
+      />
       <div>
         <button onClick={handleSubmit}>Submit</button>
         <button onClick={onCancel}>Cancel</button>

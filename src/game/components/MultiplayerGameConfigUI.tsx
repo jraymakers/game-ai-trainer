@@ -4,9 +4,13 @@ import { PlayerConfigUI } from './PlayerConfigUI';
 export const MultiplayerGameConfigUI: React.FC<{
   playerIds: readonly string[];
   setPlayerIds: (newPlayerIds: readonly string[]) => void;
+  minPlayerCount: number;
+  maxPlayerCount: number;
 }> = ({
   playerIds,
   setPlayerIds,
+  minPlayerCount,
+  maxPlayerCount,
 }) => {
   const handleChangePlayerId = useCallback((playerIdToChange: string, newValue: string) => {
     setPlayerIds(playerIds.map(playerId => playerId === playerIdToChange ? newValue : playerId));
@@ -31,13 +35,15 @@ export const MultiplayerGameConfigUI: React.FC<{
             key={index}
             playerId={playerId}
             onChangePlayerId={handleChangePlayerId}
-            onRemovePlayerId={playerIds.length > 1 ? handleRemovePlayerId : undefined}
+            onRemovePlayerId={playerIds.length > minPlayerCount ? handleRemovePlayerId : undefined}
           />
         )}
       </div>
-      <div>
-        <button onClick={handleAddNewPlayer}>Add Player</button>
-      </div>
+      {playerIds.length < maxPlayerCount ? (
+        <div>
+          <button onClick={handleAddNewPlayer}>Add Player</button>
+        </div>
+      ) : null}
     </div>
   );
 };

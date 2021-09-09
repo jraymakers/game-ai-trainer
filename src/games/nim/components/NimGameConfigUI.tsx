@@ -38,7 +38,12 @@ export const NimGameConfigUI: React.FC<GameConfigUIProps<NimGameConfig>> = ({
 
   return (
     <div>
-      <MultiplayerGameConfigUI playerIds={playerIds} setPlayerIds={setPlayerIds} />
+      <MultiplayerGameConfigUI
+        playerIds={playerIds}
+        setPlayerIds={setPlayerIds}
+        minPlayerCount={2}
+        maxPlayerCount={2}
+      />
       <div>
         <div>Initial Rows</div>
         <div>
