@@ -4,7 +4,7 @@ export const TicTacToeCellUI: React.FC<{
   row: number;
   col: number;
   value: string | null;
-  onClick: (row: number, col: number) => void;
+  onClick?: (row: number, col: number) => void;
 }> = ({
   row,
   col,
@@ -12,7 +12,9 @@ export const TicTacToeCellUI: React.FC<{
   onClick,
 }) => {
   const handleClick = useCallback(() => {
-    onClick(row, col);
+    if (onClick) {
+      onClick(row, col);
+    }
   }, [row, col, onClick]);
   return (
     <span onClick={handleClick}>

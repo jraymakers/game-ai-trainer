@@ -3,7 +3,7 @@ import type { GameUIProps } from '../../../game/types/GameUIProps';
 import type { TicTacToeGameAction } from '../types/TicTacToeGameAction';
 import type { TicTacToeGameConfig } from '../types/TicTacToeGameConfig';
 import type { TicTacToeGameState } from '../types/TicTacToeGameState';
-import { TicTacToeCellUI } from './TicTacToeCellUI';
+import { TicTacToeGridUI } from './TicTacToeGridUI';
 
 export const TicTacToeGameUI: React.FC<GameUIProps<TicTacToeGameConfig, TicTacToeGameState, TicTacToeGameAction>> = ({
   config,
@@ -18,21 +18,7 @@ export const TicTacToeGameUI: React.FC<GameUIProps<TicTacToeGameConfig, TicTacTo
     return (
       <div>
         <div>Current Turn: {config.playerIds[state.currentPlayerIndex]}</div>
-        <div style={{ cursor: 'pointer', fontSize: '48px', fontFamily: 'monospace' }}>
-          {state.grid.map((gridRow, rowIndex) =>
-            <div key={rowIndex}>
-              {gridRow.map((cell, cellIndex) =>
-                <TicTacToeCellUI
-                  key={cellIndex}
-                  row={rowIndex}
-                  col={cellIndex}
-                  value={cell != null ? config.playerIds[cell] : '•'}
-                  onClick={handleCellClick}
-                />
-              )}
-            </div>
-          )}
-        </div>
+        <TicTacToeGridUI grid={state.grid} onCellClick={handleCellClick} />
         <div>
           <span>
             <button onClick={onLeave}>Leave Game</button>
@@ -45,6 +31,7 @@ export const TicTacToeGameUI: React.FC<GameUIProps<TicTacToeGameConfig, TicTacTo
       <div>
         <div>Game over!</div>
         <div>Winner: {config.playerIds[state.winnerIndex]}</div>
+        <TicTacToeGridUI grid={state.grid} />
         <div>
           <span>
             <button onClick={onLeave}>Leave Game</button>
