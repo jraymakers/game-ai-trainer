@@ -34,7 +34,7 @@ export const NimGameConfigUI: React.FC<GameConfigUIProps<NimGameConfig>> = ({
       misere,
     };
     onSubmit(gameConfig);
-  }, [playerIds, initialRows, misere]);
+  }, [playerIds, initialRows, misere, onSubmit]);
 
   return (
     <div>

@@ -13,7 +13,7 @@ export const TicTacToeGameConfigUI: React.FC<GameConfigUIProps<TicTacToeGameConf
     onSubmit({
       playerIds
     });
-  }, [playerIds]);
+  }, [onSubmit, playerIds]);
 
   return (
     <div>

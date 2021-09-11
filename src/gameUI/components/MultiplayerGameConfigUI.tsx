@@ -14,17 +14,17 @@ export const MultiplayerGameConfigUI: React.FC<{
 }) => {
   const handleChangePlayerId = useCallback((playerIdToChange: string, newValue: string) => {
     setPlayerIds(playerIds.map(playerId => playerId === playerIdToChange ? newValue : playerId));
-  }, [playerIds]);
+  }, [playerIds, setPlayerIds]);
   const handleRemovePlayerId = useCallback((playerIdToRemove: string) => {
     setPlayerIds(playerIds.filter(playerId => playerId !== playerIdToRemove));
-  }, [playerIds]);
+  }, [playerIds, setPlayerIds]);
   const handleAddNewPlayer = useCallback(() => {
     let i = playerIds.length + 1;
     while (playerIds.includes(`Player ${i}`)) {
       i++;
     }
     setPlayerIds(playerIds.concat(`Player ${i}`));
-  }, [playerIds]);
+  }, [playerIds, setPlayerIds]);
   
   return (
     <div>

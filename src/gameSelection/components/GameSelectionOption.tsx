@@ -10,7 +10,7 @@ export const GameSelectionOption: React.FC<{
 }) => {
   const handleClick = useCallback(() => {
     onSelectGame(game);
-  }, [game]);
+  }, [game, onSelectGame]);
   return (
     <div>
       <button onClick={handleClick}>{game.displayName}</button>
