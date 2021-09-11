@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { gameCatalog } from '../../gameCatalog/constants/gameCatalog';
 import type { GameRegistration } from '../../gameRegistration/types/GameRegistration';
 import { GameRunner } from '../../gameRunner/components/GameRunner';

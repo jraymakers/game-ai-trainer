@@ -11,7 +11,7 @@ export const TicTacToeGameDefinition: GameDefinition<
   TicTacToeGameAction
 > = {
 
-  createInitialState: (config) => {
+  createInitialState: (_config) => {
     return {
       currentPlayerIndex: 0,
       grid: [[null, null, null], [null, null, null], [null, null, null]],
