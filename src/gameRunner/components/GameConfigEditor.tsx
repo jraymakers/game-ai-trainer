@@ -34,6 +34,8 @@ export const GameConfigEditor: React.FC<{
     });
   }, [gameConfig, onGameConfigChanged]);
 
+  const somePlayersUndefined = gameConfig.playerIds.some(playerId => !playerId);
+
   return (
     <div>
       <div>Configure Game: {game.displayName}</div>
@@ -51,7 +53,7 @@ export const GameConfigEditor: React.FC<{
         />
       ) : null}
       <div>
-        <button onClick={onStartGame}>Start Game</button>
+        <button onClick={onStartGame} disabled={somePlayersUndefined}>Start Game</button>
         <button onClick={onCancel}>Cancel</button>
       </div>
     </div>
