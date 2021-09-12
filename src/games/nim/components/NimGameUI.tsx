@@ -1,16 +1,18 @@
 import React, { useCallback, useState } from 'react';
 import type { GameUIProps } from '../../../gameUI/types/GameUIProps';
 import type { NimGameAction } from '../types/NimGameAction';
-import type { NimGameConfig } from '../types/NimGameConfig';
-import type { NimGameState } from '../types/NimGameState';
+import type { NimCustomGameConfig } from '../types/NimCustomGameConfig';
+import type { NimCustomGameState } from '../types/NimCustomGameState';
 import type { NimSelection } from '../types/NimSelection';
 import { NimRowUI } from './NimRowUI';
+import type { NimGameResult } from '../types/NimGameResult';
 
-export const NimGameUI: React.FC<GameUIProps<NimGameConfig, NimGameState, NimGameAction>> = ({
-  config,
-  state,
-  onAction,
-  onLeave,
+export const NimGameUI: React.FC<
+  GameUIProps<NimCustomGameConfig, NimCustomGameState, NimGameAction, NimGameResult>
+> = ({
+  gameConfig,
+  gameState,
+  onGameAction,
 }) => {
   const [selection, setSelection] = useState<NimSelection | null>(null);
 
@@ -40,33 +42,28 @@ export const NimGameUI: React.FC<GameUIProps<NimGameConfig, NimGameState, NimGam
         itemsToRemove: Object.keys(selection.selectedItems).length,
       };
       setSelection(null);
-      onAction(action);
+      onGameAction(action);
     }
-  }, [selection, onAction]);
+  }, [selection, onGameAction]);
 
   const handleReset = useCallback(() => {
     setSelection(null);
   }, []);
 
-  if (state.gameResult) {
+  if (gameState.gameResult) {
     return (
       <div>
         <div>Game over!</div>
-        <div>Winner: {config.playerIds[state.gameResult.winnerIndex]}</div>
-        <div>
-          <span>
-            <button onClick={onLeave}>Leave Game</button>
-          </span>
-        </div>
+        <div>Winner: {gameConfig.playerIds[gameState.gameResult.winnerIndex]}</div>
       </div>
     );
   } else {
     return (
       <div>
-        <div>Win condition: {config.misere ? 'Last move loses' : 'Last move wins'}</div>
-        <div>Current Turn: {config.playerIds[state.currentPlayerIndex]}</div>
+        <div>Win condition: {gameConfig.customGameConfig.misere ? 'Last move loses' : 'Last move wins'}</div>
+        <div>Current Turn: {gameConfig.playerIds[gameState.currentPlayerIndex]}</div>
         <div style={{ cursor: 'pointer', fontSize: '48px', fontFamily: 'monospace' }}>
-          {state.currentRows.map((rowItemCount, rowIndex) =>
+          {gameState.customGameState.currentRows.map((rowItemCount, rowIndex) =>
             <NimRowUI
               key={rowIndex}
               rowIndex={rowIndex}
@@ -82,11 +79,6 @@ export const NimGameUI: React.FC<GameUIProps<NimGameConfig, NimGameState, NimGam
           </span>
           <span>
             <button onClick={handleReset} disabled={!selection}>Reset</button>
-          </span>
-        </div>
-        <div>
-          <span>
-            <button onClick={onLeave}>Leave Game</button>
           </span>
         </div>
       </div>

@@ -1,46 +1,38 @@
 import React, { useCallback } from 'react';
 import type { GameUIProps } from '../../../gameUI/types/GameUIProps';
 import type { TicTacToeGameAction } from '../types/TicTacToeGameAction';
-import type { TicTacToeGameConfig } from '../types/TicTacToeGameConfig';
-import type { TicTacToeGameState } from '../types/TicTacToeGameState';
+import type { TicTacToeCustomGameConfig } from '../types/TicTacToeCustomGameConfig';
+import type { TicTacToeCustomGameState } from '../types/TicTacToeCustomGameState';
 import { TicTacToeGridUI } from './TicTacToeGridUI';
+import type { TicTacToeGameResult } from '../types/TicTacToeGameResult';
 
-export const TicTacToeGameUI: React.FC<GameUIProps<TicTacToeGameConfig, TicTacToeGameState, TicTacToeGameAction>> = ({
-  config,
-  state,
-  onAction,
-  onLeave,
+export const TicTacToeGameUI: React.FC<
+  GameUIProps<TicTacToeCustomGameConfig, TicTacToeCustomGameState, TicTacToeGameAction, TicTacToeGameResult>
+> = ({
+  gameConfig,
+  gameState,
+  onGameAction,
 }) => {
   const handleCellClick = useCallback((row: number, col: number) => {
-    onAction({ row, col });
-  }, [onAction]);
-  if (state.gameResult) {
+    onGameAction({ row, col });
+  }, [onGameAction]);
+  if (gameState.gameResult) {
     return (
       <div>
         <div>Game over!</div>
-        {state.gameResult.winnerIndex !== null ? (
-          <div>Winner: {config.playerIds[state.gameResult.winnerIndex]}</div>
+        {gameState.gameResult.winnerIndex !== null ? (
+          <div>Winner: {gameConfig.playerIds[gameState.gameResult.winnerIndex]}</div>
         ) : (
           <div>Draw!</div>
         )}
-        <TicTacToeGridUI grid={state.grid} />
-        <div>
-          <span>
-            <button onClick={onLeave}>Leave Game</button>
-          </span>
-        </div>
+        <TicTacToeGridUI grid={gameState.customGameState.grid} />
       </div>
     );
   } else {
     return (
       <div>
-        <div>Current Turn: {config.playerIds[state.currentPlayerIndex]}</div>
-        <TicTacToeGridUI grid={state.grid} onCellClick={handleCellClick} />
-        <div>
-          <span>
-            <button onClick={onLeave}>Leave Game</button>
-          </span>
-        </div>
+        <div>Current Turn: {gameConfig.playerIds[gameState.currentPlayerIndex]}</div>
+        <TicTacToeGridUI grid={gameState.customGameState.grid} onCellClick={handleCellClick} />
       </div>
     );
   }

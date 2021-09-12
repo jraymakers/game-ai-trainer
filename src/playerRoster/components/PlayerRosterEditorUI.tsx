@@ -1,19 +1,19 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import type { PlayerMap } from '../types/PlayerMap';
-import { PlayerMapEditorItemUI } from './PlayerMapEditorItemUI';
+import type { PlayerRoster } from '../types/PlayerRoster';
+import { PlayerRosterEditorItemUI } from './PlayerRosterEditorItemUI';
 
-export const PlayerMapEditorUI: React.FC<{
-  playerMap: PlayerMap;
+export const PlayerRosterEditorUI: React.FC<{
+  playerRoster: PlayerRoster;
   onAddNewPlayer: (newPlayerId: string) => void;
   onRemovePlayer: (playerId: string) => void;
 }> = ({
-  playerMap,
+  playerRoster,
   onAddNewPlayer,
   onRemovePlayer,
 }) => {
   const playerIds = useMemo<string[]>(() => {
-    return Object.keys(playerMap).sort();
-  }, [playerMap]);
+    return Object.keys(playerRoster).sort();
+  }, [playerRoster]);
 
   const [newPlayerId, setNewPlayerId] = useState<string>('');
 
@@ -21,7 +21,7 @@ export const PlayerMapEditorUI: React.FC<{
     setNewPlayerId(e.target.value);
   }, []);
 
-  const isNewPlayerIdValid = !!newPlayerId && !playerMap[newPlayerId];
+  const isNewPlayerIdValid = !!newPlayerId && !playerRoster[newPlayerId];
 
   const handleAddNewPlayer = useCallback(() => {
     onAddNewPlayer(newPlayerId);
@@ -33,7 +33,7 @@ export const PlayerMapEditorUI: React.FC<{
       <div>Players: {playerIds.length}</div>
       <div>
         {playerIds.map(playerId =>
-          <PlayerMapEditorItemUI
+          <PlayerRosterEditorItemUI
             key={playerId}
             playerId={playerId}
             onRemovePlayer={onRemovePlayer}

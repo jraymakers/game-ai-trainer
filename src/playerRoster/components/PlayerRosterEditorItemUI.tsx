@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-export const PlayerMapEditorItemUI: React.FC<{
+export const PlayerRosterEditorItemUI: React.FC<{
   playerId: string;
   onRemovePlayer: (playerId: string) => void;
 }> = ({

@@ -1,9 +1,9 @@
-import type { NimGameConfig } from '../types/NimGameConfig';
+import type { NimCustomGameConfig } from '../types/NimCustomGameConfig';
 import type { NimGameResult } from '../types/NimGameResult';
 import type { NimRows } from '../types/NimRows';
 
 export function getNimGameResult(
-  config: NimGameConfig,
+  config: NimCustomGameConfig,
   rows: NimRows,
   prevCurrentPlayerIndex: number,
   currentPlayerIndex: number,

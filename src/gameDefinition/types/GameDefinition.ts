@@ -1,4 +1,21 @@
-export type GameDefinition<TConfig, TState, TAction> = Readonly<{
-  createInitialState: (config: TConfig) => TState;
-  getStateAfterAction: (config: TConfig, state: TState, action: TAction) => TState;
+import type { GameConfig } from './GameConfig';
+import type { GameState } from './GameState';
+
+export type GameDefinition<TCustomGameConfig, TCustomGameState, TGameAction, TGameResult> = Readonly<{
+
+  getMinPlayerCount: () => number;
+  getMaxPlayerCount: () => number;
+  getDefaultPlayerCount: () => number;
+  getDefaultCustomGameConfig: () => TCustomGameConfig;
+
+  createInitialState: (
+    gameConfig: GameConfig<TCustomGameConfig>,
+  ) => GameState<TCustomGameState, TGameResult>;
+
+  getStateAfterAction: (
+    gameConfig: GameConfig<TCustomGameConfig>,
+    gameState: GameState<TCustomGameState, TGameResult>,
+    gameAction: TGameAction,
+  ) => GameState<TCustomGameState, TGameResult>;
+
 }>;

@@ -3,23 +3,23 @@ import { gameCatalog } from '../../gameCatalog/constants/gameCatalog';
 import type { GameRegistration } from '../../gameRegistration/types/GameRegistration';
 import { GameRunner } from '../../gameRunner/components/GameRunner';
 import { GameSelector } from '../../gameSelection/components/GameSelector';
-import { PlayerMapEditorUI } from '../../playerManagement/components/PlayerMapEditorUI';
-import type { PlayerMap } from '../../playerManagement/types/PlayerMap';
+import { PlayerRosterEditorUI } from '../../playerRoster/components/PlayerRosterEditorUI';
+import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
 
 export const Root: React.FC = () => {
-  const [playerMap, setPlayerMap] = useState<PlayerMap>(() => ({}));
+  const [playerRoster, setPlayerRoster] = useState<PlayerRoster>(() => ({}));
 
   const handleAddNewPlayer = useCallback((newPlayerId: string) => {
-    setPlayerMap({
-      ...playerMap,
-      [newPlayerId]: { playerId: newPlayerId },
+    setPlayerRoster({
+      ...playerRoster,
+      [newPlayerId]: { id: newPlayerId },
     });
-  }, [playerMap]);
+  }, [playerRoster]);
 
   const handleRemovePlayer = useCallback((playerId: string) => {
-    const { [playerId]: _, ...rest } = playerMap;
-    setPlayerMap(rest);
-  }, [playerMap]);
+    const { [playerId]: _, ...rest } = playerRoster;
+    setPlayerRoster(rest);
+  }, [playerRoster]);
 
   const [selectedGame, setSelectedGame] = useState<GameRegistration | null>(null);
   
@@ -37,11 +37,11 @@ export const Root: React.FC = () => {
       
       <div>
         {selectedGame ? (
-          <GameRunner game={selectedGame} onLeave={handleLeaveGame} />
+          <GameRunner playerRoster={playerRoster} game={selectedGame} onLeaveGame={handleLeaveGame} />
         ) : (
           <div>
-            <PlayerMapEditorUI
-              playerMap={playerMap}
+            <PlayerRosterEditorUI
+              playerRoster={playerRoster}
               onAddNewPlayer={handleAddNewPlayer}
               onRemovePlayer={handleRemovePlayer}
             />

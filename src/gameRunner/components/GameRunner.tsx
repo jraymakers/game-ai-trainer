@@ -1,21 +1,46 @@
 import React, { useCallback, useState } from 'react';
+import type { GameConfig } from '../../gameDefinition/types/GameConfig';
+import type { GameState } from '../../gameDefinition/types/GameState';
 import type { GameRegistration } from '../../gameRegistration/types/GameRegistration';
 import type { JsonObject } from '../../generalPurpose/types/Json';
+import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
+import { PlayerSelectionUI } from '../../playerSelection/components/PlayerSelectionUI';
 
 export const GameRunner: React.FC<{
+  playerRoster: PlayerRoster;
   game: GameRegistration;
-  onLeave: () => void;
+  onLeaveGame: () => void;
 }> = ({
+  playerRoster,
   game,
-  onLeave,
+  onLeaveGame,
 }) => {
-  const [gameConfig, setGameConfig] = useState<JsonObject | null>(null);
-  const [gameState, setGameState] = useState<JsonObject | null>(null);
-  
-  const handleSubmitGameConfig = useCallback((newGameConfig: JsonObject) => {
-      setGameConfig(newGameConfig);
-      setGameState(game.definition.createInitialState(newGameConfig));
-  }, [game]);
+  const [gameConfig, setGameConfig] = useState<GameConfig<JsonObject>>(
+    () => ({
+      playerIds: Array.from({ length: game.definition.getDefaultPlayerCount() }, _ => ''),
+      customGameConfig: game.definition.getDefaultCustomGameConfig(),
+    })
+  );
+
+  const handleSelectedPlayerIdsChanged = useCallback((newSelectedPlayerIds: readonly string[]) => {
+    setGameConfig({
+      ...gameConfig,
+      playerIds: newSelectedPlayerIds,
+    });
+  }, [gameConfig]);
+
+  const handleCustomGameConfigChanged = useCallback((newCustomGameConfig: JsonObject) => {
+    setGameConfig({
+      ...gameConfig,
+      customGameConfig: newCustomGameConfig,
+    });
+  }, [gameConfig]);
+
+  const [gameState, setGameState] = useState<GameState<JsonObject, JsonObject> | null>(null);
+
+  const handleStartGame = useCallback(() => {
+    setGameState(game.definition.createInitialState(gameConfig));
+  }, [game.definition, gameConfig]);
 
   const handleGameAction = useCallback((gameAction: JsonObject) => {
     if (gameConfig && gameState) {
@@ -29,19 +54,34 @@ export const GameRunner: React.FC<{
         <div>
           <div>Current Game: {game.displayName}</div>
           <game.gameUI
-            config={gameConfig}
-            state={gameState}
-            onAction={handleGameAction}
-            onLeave={onLeave}
+            gameConfig={gameConfig}
+            gameState={gameState}
+            onGameAction={handleGameAction}
           />
+          <div>
+            <button onClick={onLeaveGame}>Leave Game</button>
+          </div>
         </div>
       ) : (
         <div>
           <div>Configure Game: {game.displayName}</div>
-          <game.configUI
-            onSubmit={handleSubmitGameConfig}
-            onCancel={onLeave}
+          <PlayerSelectionUI
+            playerRoster={playerRoster}
+            minPlayerCount={game.definition.getMinPlayerCount()}
+            maxPlayerCount={game.definition.getMaxPlayerCount()}
+            selectedPlayerIds={gameConfig.playerIds}
+            onSelectedPlayerIdsChanged={handleSelectedPlayerIdsChanged}
           />
+          {game.customConfigUI ? (
+            <game.customConfigUI
+              customGameConfig={gameConfig.customGameConfig}
+              onCustomGameConfigChanged={handleCustomGameConfigChanged}
+            />
+          ) : null}
+          <div>
+            <button onClick={handleStartGame}>Start Game</button>
+            <button onClick={onLeaveGame}>Cancel</button>
+          </div>
         </div>
       )}
     </div>

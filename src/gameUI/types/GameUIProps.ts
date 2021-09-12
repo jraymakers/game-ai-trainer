@@ -1,6 +1,8 @@
-export type GameUIProps<TConfig, TState, TAction> = Readonly<{
-  config: TConfig;
-  state: TState;
-  onAction: (action: TAction) => void;
-  onLeave: () => void;
+import type { GameConfig } from '../../gameDefinition/types/GameConfig';
+import type { GameState } from '../../gameDefinition/types/GameState';
+
+export type GameUIProps<TCustomGameConfig, TCustomGameState, TGameAction, TGameResult> = Readonly<{
+  gameConfig: GameConfig<TCustomGameConfig>;
+  gameState: GameState<TCustomGameState, TGameResult>;
+  onGameAction: (gameAction: TGameAction) => void;
 }>;

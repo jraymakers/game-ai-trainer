@@ -1,38 +1,64 @@
 import type { GameDefinition } from '../../../gameDefinition/types/GameDefinition';
 import { nextIndex } from '../../../generalPurpose/functions/nextIndex';
 import { getNimGameResult } from '../functions/getNimGameResult';
+import type { NimCustomGameConfig } from '../types/NimCustomGameConfig';
+import type { NimCustomGameState } from '../types/NimCustomGameState';
 import type { NimGameAction } from '../types/NimGameAction';
-import type { NimGameConfig } from '../types/NimGameConfig';
-import type { NimGameState } from '../types/NimGameState';
+import type { NimGameResult } from '../types/NimGameResult';
 
 export const NimGameDefinition: GameDefinition<
-  NimGameConfig,
-  NimGameState,
-  NimGameAction
+  NimCustomGameConfig,
+  NimCustomGameState,
+  NimGameAction,
+  NimGameResult
 > = {
 
-  createInitialState: (config) => {
+  getMinPlayerCount: () => {
+    return 2;
+  },
+
+  getMaxPlayerCount: () => {
+    return 4;
+  },
+
+  getDefaultPlayerCount: () => {
+    return 2;
+  },
+
+  getDefaultCustomGameConfig: () => {
     return {
-      currentPlayerIndex: 0,
-      currentRows: config.initialRows,
-      gameResult: null,
+      initialRows: [3, 5, 7],
+      misere: true,
     };
   },
 
-  getStateAfterAction: (config, state, action) => {
-    const { playerIds } = config;
-    const { currentPlayerIndex, currentRows } = state;
-    const { rowIndex, itemsToRemove } = action;
+  createInitialState: (gameConfig) => {
+    return {
+      currentPlayerIndex: 0,
+      gameResult: null,
+      customGameState: {
+        currentRows: gameConfig.customGameConfig.initialRows,
+      }
+    };
+  },
+
+  getStateAfterAction: (gameConfig, gameState, gameAction) => {
+    const { playerIds, customGameConfig } = gameConfig;
+    const { currentPlayerIndex, customGameState } = gameState;
+    const { currentRows } = customGameState;
+    const { rowIndex, itemsToRemove } = gameAction;
     const nextCurrentPlayerIndex = nextIndex(currentPlayerIndex, playerIds);
     const nextCurrentRows = currentRows.map(
       (rowItemCount, index) => index === rowIndex ? rowItemCount - itemsToRemove : rowItemCount
     );
     const nextGameResult = getNimGameResult(
-      config, nextCurrentRows, currentPlayerIndex, nextCurrentPlayerIndex);
+      customGameConfig, nextCurrentRows, currentPlayerIndex, nextCurrentPlayerIndex);
     return {
       currentPlayerIndex: nextCurrentPlayerIndex,
-      currentRows: nextCurrentRows,
       gameResult: nextGameResult,
+      customGameState: {
+        currentRows: nextCurrentRows,
+      }
     };
   },
 

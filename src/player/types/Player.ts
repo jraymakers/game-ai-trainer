@@ -1,3 +1,3 @@
 export type Player = Readonly<{
-  playerId: string;
+  id: string;
 }>;
