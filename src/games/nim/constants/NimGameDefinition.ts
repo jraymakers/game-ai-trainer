@@ -18,7 +18,7 @@ export const NimGameDefinition: GameDefinition<
   },
 
   getMaxPlayerCount: () => {
-    return 4;
+    return 2;
   },
 
   getDefaultPlayerCount: () => {
