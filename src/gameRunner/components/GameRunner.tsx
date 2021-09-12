@@ -4,7 +4,7 @@ import type { GameState } from '../../gameDefinition/types/GameState';
 import type { GameRegistration } from '../../gameRegistration/types/GameRegistration';
 import type { JsonObject } from '../../generalPurpose/types/Json';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
-import { PlayerSelectionUI } from '../../playerSelection/components/PlayerSelectionUI';
+import { GameConfigEditor } from './GameConfigEditor';
 
 export const GameRunner: React.FC<{
   playerRoster: PlayerRoster;
@@ -22,20 +22,6 @@ export const GameRunner: React.FC<{
     })
   );
 
-  const handleSelectedPlayerIdsChanged = useCallback((newSelectedPlayerIds: readonly string[]) => {
-    setGameConfig({
-      ...gameConfig,
-      playerIds: newSelectedPlayerIds,
-    });
-  }, [gameConfig]);
-
-  const handleCustomGameConfigChanged = useCallback((newCustomGameConfig: JsonObject) => {
-    setGameConfig({
-      ...gameConfig,
-      customGameConfig: newCustomGameConfig,
-    });
-  }, [gameConfig]);
-
   const [gameState, setGameState] = useState<GameState<JsonObject, JsonObject> | null>(null);
 
   const handleStartGame = useCallback(() => {
@@ -46,11 +32,11 @@ export const GameRunner: React.FC<{
     if (gameConfig && gameState) {
       setGameState(game.definition.getStateAfterAction(gameConfig, gameState, gameAction));
     }
-  }, [game, gameConfig, gameState]);
+  }, [game.definition, gameConfig, gameState]);
 
   return (
     <div>
-      {gameConfig && gameState ? (
+      {gameState ? (
         <div>
           <div>Current Game: {game.displayName}</div>
           <game.gameUI
@@ -63,26 +49,14 @@ export const GameRunner: React.FC<{
           </div>
         </div>
       ) : (
-        <div>
-          <div>Configure Game: {game.displayName}</div>
-          <PlayerSelectionUI
-            playerRoster={playerRoster}
-            minPlayerCount={game.definition.getMinPlayerCount()}
-            maxPlayerCount={game.definition.getMaxPlayerCount()}
-            selectedPlayerIds={gameConfig.playerIds}
-            onSelectedPlayerIdsChanged={handleSelectedPlayerIdsChanged}
-          />
-          {game.customConfigUI ? (
-            <game.customConfigUI
-              customGameConfig={gameConfig.customGameConfig}
-              onCustomGameConfigChanged={handleCustomGameConfigChanged}
-            />
-          ) : null}
-          <div>
-            <button onClick={handleStartGame}>Start Game</button>
-            <button onClick={onLeaveGame}>Cancel</button>
-          </div>
-        </div>
+        <GameConfigEditor
+          playerRoster={playerRoster}
+          game={game}
+          gameConfig={gameConfig}
+          onGameConfigChanged={setGameConfig}
+          onStartGame={handleStartGame}
+          onCancel={onLeaveGame}
+        />
       )}
     </div>
   );
