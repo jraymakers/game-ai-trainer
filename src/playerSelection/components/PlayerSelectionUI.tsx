@@ -1,4 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
+import { sortedPlayerList } from '../../playerRoster/functions/sortedPlayerList';
+import type { PlayerList } from '../../playerRoster/types/PlayerList';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
 import { PlayerSelectorUI } from './PlayerSelectorUI';
 
@@ -17,8 +19,8 @@ export const PlayerSelectionUI: React.FC<{
 }) => {
   const playerCount = selectedPlayerIds.length;
 
-  const availablePlayers = useMemo<readonly string[]>(() => {
-    return Object.keys(playerRoster).sort();
+  const availablePlayers = useMemo<PlayerList>(() => {
+    return sortedPlayerList(playerRoster);
   }, [playerRoster]);
 
   const handleDecrementPlayerCount = useCallback(() => {

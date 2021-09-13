@@ -1,18 +1,20 @@
 import React, { useCallback } from 'react';
+import type { Player } from '../../player/types/Player';
 
 export const PlayerRosterEditorItemUI: React.FC<{
-  playerId: string;
+  player: Player;
   onRemovePlayer: (playerId: string) => void;
 }> = ({
-  playerId,
+  player,
   onRemovePlayer,
 }) => {
   const handleClick = useCallback(() => {
-    onRemovePlayer(playerId);
-  }, [playerId, onRemovePlayer]);
+    onRemovePlayer(player.id);
+  }, [player, onRemovePlayer]);
   return (
     <div>
-      <span>{playerId}</span>
+      <span>{player.id}</span>
+      <span> [{player.type}] </span>
       <button onClick={handleClick}>Remove</button>
     </div>
   );
