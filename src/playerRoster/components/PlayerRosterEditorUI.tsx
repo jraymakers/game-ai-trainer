@@ -28,6 +28,12 @@ export const PlayerRosterEditorUI: React.FC<{
     setNewPlayerId('');
   }, [newPlayerId, onAddNewPlayer]);
 
+  const handleInputKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleAddNewPlayer();
+    }
+  }, [handleAddNewPlayer]);
+
   return (
     <div>
       <div>Players: {playerIds.length}</div>
@@ -41,7 +47,10 @@ export const PlayerRosterEditorUI: React.FC<{
         )}
       </div>
       <div>
-        <input type="text" onChange={handleChangeNewPlayerId} value={newPlayerId} />
+        <input type="text" value={newPlayerId}
+          onChange={handleChangeNewPlayerId}
+          onKeyDown={handleInputKeyDown}
+        />
         <button onClick={handleAddNewPlayer} disabled={!isNewPlayerIdValid}>Add New Player</button>
       </div>
     </div>
