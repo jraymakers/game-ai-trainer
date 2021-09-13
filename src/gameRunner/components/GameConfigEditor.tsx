@@ -1,40 +1,45 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { GameConfig } from '../../gameDefinition/types/GameConfig';
 import type { GameRegistration } from '../../gameRegistration/types/GameRegistration';
 import type { JsonObject } from '../../generalPurpose/types/Json';
+import type { Player } from '../../player/types/Player';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
 import { PlayerSelectionUI } from '../../playerSelection/components/PlayerSelectionUI';
 
 export const GameConfigEditor: React.FC<{
   playerRoster: PlayerRoster;
   game: GameRegistration;
-  gameConfig: GameConfig<JsonObject>;
-  onGameConfigChanged: (gameConfig: GameConfig<JsonObject>) => void;
-  onStartGame: () => void;
+  onStartGame: (newGameConfig: GameConfig<JsonObject>) => void;
   onCancel: () => void;
 }> = ({
   playerRoster,
   game,
-  gameConfig,
-  onGameConfigChanged,
   onStartGame,
   onCancel,
 }) => {
-  const handleSelectedPlayerIdsChanged = useCallback((newSelectedPlayerIds: readonly string[]) => {
-    onGameConfigChanged({
-      ...gameConfig,
-      playerIds: newSelectedPlayerIds,
-    });
-  }, [gameConfig, onGameConfigChanged]);
+  const [selectedPlayerIds, setSelectedPlayerIds] = useState<readonly string[]>(
+    () => Array.from({ length: game.definition.getDefaultPlayerCount() }, _ => '')
+  );
 
-  const handleCustomGameConfigChanged = useCallback((newCustomGameConfig: JsonObject) => {
-    onGameConfigChanged({
-      ...gameConfig,
-      customGameConfig: newCustomGameConfig,
-    });
-  }, [gameConfig, onGameConfigChanged]);
+  const [customGameConfig, setCustomGameConfig] = useState<JsonObject>(
+    () => game.definition.getDefaultCustomGameConfig()
+  );
 
-  const somePlayersUndefined = gameConfig.playerIds.some(playerId => !playerId);
+  const somePlayersUndefined = selectedPlayerIds.some(playerId => !playerId);
+
+  const handleStartGame = useCallback(() => {
+    const players: Player[] = [];
+    for (const playerId of selectedPlayerIds) {
+      const player = playerRoster[playerId];
+      if (player) {
+        players.push(player);
+      }
+    }
+    onStartGame({
+      players,
+      customGameConfig,
+    });
+  }, [customGameConfig, onStartGame, playerRoster, selectedPlayerIds]);
 
   return (
     <div>
@@ -43,17 +48,17 @@ export const GameConfigEditor: React.FC<{
         playerRoster={playerRoster}
         minPlayerCount={game.definition.getMinPlayerCount()}
         maxPlayerCount={game.definition.getMaxPlayerCount()}
-        selectedPlayerIds={gameConfig.playerIds}
-        onSelectedPlayerIdsChanged={handleSelectedPlayerIdsChanged}
+        selectedPlayerIds={selectedPlayerIds}
+        onSelectedPlayerIdsChanged={setSelectedPlayerIds}
       />
       {game.customConfigUI ? (
         <game.customConfigUI
-          customGameConfig={gameConfig.customGameConfig}
-          onCustomGameConfigChanged={handleCustomGameConfigChanged}
+          customGameConfig={customGameConfig}
+          onCustomGameConfigChanged={setCustomGameConfig}
         />
       ) : null}
       <div>
-        <button onClick={onStartGame} disabled={somePlayersUndefined}>Start Game</button>
+        <button onClick={handleStartGame} disabled={somePlayersUndefined}>Start Game</button>
         <button onClick={onCancel}>Cancel</button>
       </div>
     </div>

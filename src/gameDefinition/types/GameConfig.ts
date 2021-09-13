@@ -1,4 +1,6 @@
+import type { PlayerList } from '../../player/types/PlayerList';
+
 export type GameConfig<TCustomGameConfig> = Readonly<{
-  playerIds: readonly string[];
+  players: PlayerList;
   customGameConfig: TCustomGameConfig;
 }>;

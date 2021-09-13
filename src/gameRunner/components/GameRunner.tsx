@@ -15,18 +15,13 @@ export const GameRunner: React.FC<{
   game,
   onLeaveGame,
 }) => {
-  const [gameConfig, setGameConfig] = useState<GameConfig<JsonObject>>(
-    () => ({
-      playerIds: Array.from({ length: game.definition.getDefaultPlayerCount() }, _ => ''),
-      customGameConfig: game.definition.getDefaultCustomGameConfig(),
-    })
-  );
-
+  const [gameConfig, setGameConfig] = useState<GameConfig<JsonObject> | null>(null);
   const [gameState, setGameState] = useState<GameState<JsonObject, JsonObject> | null>(null);
 
-  const handleStartGame = useCallback(() => {
-    setGameState(game.definition.createInitialState(gameConfig));
-  }, [game.definition, gameConfig]);
+  const handleStartGame = useCallback((newGameConfig: GameConfig<JsonObject>) => {
+    setGameConfig(newGameConfig);
+    setGameState(game.definition.createInitialState(newGameConfig));
+  }, [game.definition]);
 
   const handleGameAction = useCallback((gameAction: JsonObject) => {
     if (gameConfig && gameState) {
@@ -36,7 +31,7 @@ export const GameRunner: React.FC<{
 
   return (
     <div>
-      {gameState ? (
+      {gameConfig && gameState ? (
         <div>
           <div>Current Game: {game.displayName}</div>
           <game.gameUI
@@ -52,8 +47,6 @@ export const GameRunner: React.FC<{
         <GameConfigEditor
           playerRoster={playerRoster}
           game={game}
-          gameConfig={gameConfig}
-          onGameConfigChanged={setGameConfig}
           onStartGame={handleStartGame}
           onCancel={onLeaveGame}
         />

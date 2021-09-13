@@ -40,11 +40,11 @@ export const TicTacToeGameDefinition: GameDefinition<
   },
 
   getStateAfterAction: (gameConfig, gameState, gameAction) => {
-    const { playerIds } = gameConfig;
+    const { players } = gameConfig;
     const { currentPlayerIndex, customGameState } = gameState;
     const { grid } = customGameState;
     const { row, col } = gameAction;
-    const nextCurrentPlayerIndex = nextIndex(currentPlayerIndex, playerIds);
+    const nextCurrentPlayerIndex = nextIndex(currentPlayerIndex, players);
     const nextGrid = grid.map(
       (gridRow, rowIndex) =>
         rowIndex === row

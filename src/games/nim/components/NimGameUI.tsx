@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import type { GameUIProps } from '../../../gameUI/types/GameUIProps';
-import type { NimGameAction } from '../types/NimGameAction';
+import { PlayerUI } from '../../../player/components/PlayerUI';
 import type { NimCustomGameConfig } from '../types/NimCustomGameConfig';
 import type { NimCustomGameState } from '../types/NimCustomGameState';
+import type { NimGameAction } from '../types/NimGameAction';
+import type { NimGameResult } from '../types/NimGameResult';
 import type { NimSelection } from '../types/NimSelection';
 import { NimRowUI } from './NimRowUI';
-import type { NimGameResult } from '../types/NimGameResult';
 
 export const NimGameUI: React.FC<
   GameUIProps<NimCustomGameConfig, NimCustomGameState, NimGameAction, NimGameResult>
@@ -54,14 +55,20 @@ export const NimGameUI: React.FC<
     return (
       <div>
         <div>Game over!</div>
-        <div>Winner: {gameConfig.playerIds[gameState.gameResult.winnerIndex]}</div>
+        <div>
+          <span>Winner: </span>
+          <PlayerUI player={gameConfig.players[gameState.gameResult.winnerIndex]} />
+        </div>
       </div>
     );
   } else {
     return (
       <div>
         <div>Win condition: {gameConfig.customGameConfig.misere ? 'Last move loses' : 'Last move wins'}</div>
-        <div>Current Turn: {gameConfig.playerIds[gameState.currentPlayerIndex]}</div>
+        <div>
+          <span>Current Turn: </span>
+          <PlayerUI player={gameConfig.players[gameState.currentPlayerIndex]} />
+        </div>
         <div style={{ cursor: 'pointer', fontSize: '48px', fontFamily: 'monospace' }}>
           {gameState.customGameState.currentRows.map((rowItemCount, rowIndex) =>
             <NimRowUI

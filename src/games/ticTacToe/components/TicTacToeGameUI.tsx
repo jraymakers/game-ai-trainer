@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react';
 import type { GameUIProps } from '../../../gameUI/types/GameUIProps';
-import type { TicTacToeGameAction } from '../types/TicTacToeGameAction';
+import { PlayerUI } from '../../../player/components/PlayerUI';
 import type { TicTacToeCustomGameConfig } from '../types/TicTacToeCustomGameConfig';
 import type { TicTacToeCustomGameState } from '../types/TicTacToeCustomGameState';
-import { TicTacToeGridUI } from './TicTacToeGridUI';
+import type { TicTacToeGameAction } from '../types/TicTacToeGameAction';
 import type { TicTacToeGameResult } from '../types/TicTacToeGameResult';
+import { TicTacToeGridUI } from './TicTacToeGridUI';
 
 export const TicTacToeGameUI: React.FC<
   GameUIProps<TicTacToeCustomGameConfig, TicTacToeCustomGameState, TicTacToeGameAction, TicTacToeGameResult>
@@ -21,7 +22,10 @@ export const TicTacToeGameUI: React.FC<
       <div>
         <div>Game over!</div>
         {gameState.gameResult.winnerIndex !== null ? (
-          <div>Winner: {gameConfig.playerIds[gameState.gameResult.winnerIndex]}</div>
+          <div>
+            <span>Winner: </span>
+            <PlayerUI player={gameConfig.players[gameState.gameResult.winnerIndex]} />
+          </div>
         ) : (
           <div>Draw!</div>
         )}
@@ -31,7 +35,10 @@ export const TicTacToeGameUI: React.FC<
   } else {
     return (
       <div>
-        <div>Current Turn: {gameConfig.playerIds[gameState.currentPlayerIndex]}</div>
+        <div>
+          <span>Current Turn: </span>
+          <PlayerUI player={gameConfig.players[gameState.currentPlayerIndex]} />
+        </div>
         <TicTacToeGridUI grid={gameState.customGameState.grid} onCellClick={handleCellClick} />
       </div>
     );

@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
+import type { PlayerList } from '../../player/types/PlayerList';
 import { sortedPlayerList } from '../../playerRoster/functions/sortedPlayerList';
-import type { PlayerList } from '../../playerRoster/types/PlayerList';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
 import { PlayerSelectorUI } from './PlayerSelectorUI';
 

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { PlayerUI } from '../../player/components/PlayerUI';
 import type { Player } from '../../player/types/Player';
 
 export const PlayerRosterEditorItemUI: React.FC<{
@@ -13,8 +14,7 @@ export const PlayerRosterEditorItemUI: React.FC<{
   }, [player, onRemovePlayer]);
   return (
     <div>
-      <span>{player.id}</span>
-      <span> [{player.type}] </span>
+      <PlayerUI player={player} />
       <button onClick={handleClick}>Remove</button>
     </div>
   );

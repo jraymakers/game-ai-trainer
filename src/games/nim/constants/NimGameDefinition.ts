@@ -43,11 +43,11 @@ export const NimGameDefinition: GameDefinition<
   },
 
   getStateAfterAction: (gameConfig, gameState, gameAction) => {
-    const { playerIds, customGameConfig } = gameConfig;
+    const { players, customGameConfig } = gameConfig;
     const { currentPlayerIndex, customGameState } = gameState;
     const { currentRows } = customGameState;
     const { rowIndex, itemsToRemove } = gameAction;
-    const nextCurrentPlayerIndex = nextIndex(currentPlayerIndex, playerIds);
+    const nextCurrentPlayerIndex = nextIndex(currentPlayerIndex, players);
     const nextCurrentRows = currentRows.map(
       (rowItemCount, index) => index === rowIndex ? rowItemCount - itemsToRemove : rowItemCount
     );

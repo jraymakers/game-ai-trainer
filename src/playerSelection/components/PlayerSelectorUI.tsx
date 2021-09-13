@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import type { PlayerList } from '../../playerRoster/types/PlayerList';
+import type { PlayerList } from '../../player/types/PlayerList';
 
 export const PlayerSelectorUI: React.FC<{
   availablePlayers: PlayerList;
@@ -25,7 +25,7 @@ export const PlayerSelectorUI: React.FC<{
   return (
     <div>
       <select value={selectedPlayerId} onChange={handleChange}>
-        {!selectedPlayerId ? <option key="" value={''}>Select a player</option> : null}
+        {!selectedPlayerId ? <option key="" value="">Select a player</option> : null}
         {availablePlayers.map(player =>
           <option key={player.id} value={player.id}>{player.id} [{player.type}]</option>
         )}

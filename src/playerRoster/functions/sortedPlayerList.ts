@@ -1,5 +1,5 @@
 import type { Player } from '../../player/types/Player';
-import type { PlayerList } from '../types/PlayerList';
+import type { PlayerList } from '../../player/types/PlayerList';
 import type { PlayerRoster } from '../types/PlayerRoster';
 
 export function sortedPlayerList(playerRoster: PlayerRoster): PlayerList {
