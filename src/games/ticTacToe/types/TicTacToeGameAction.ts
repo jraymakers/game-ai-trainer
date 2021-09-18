@@ -1,4 +1,4 @@
 export type TicTacToeGameAction = Readonly<{
-  row: number;
-  col: number;
+  rowIndex: number;
+  colIndex: number;
 }>;

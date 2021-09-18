@@ -14,8 +14,8 @@ export const TicTacToeGameUI: React.FC<
   gameState,
   onGameAction,
 }) => {
-  const handleCellClick = useCallback((row: number, col: number) => {
-    onGameAction({ row, col });
+  const handleCellClick = useCallback((rowIndex: number, colIndex: number) => {
+    onGameAction({ rowIndex, colIndex });
   }, [onGameAction]);
   if (gameState.gameResult) {
     return (

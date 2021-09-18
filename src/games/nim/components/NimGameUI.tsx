@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import type { GameUIProps } from '../../../gameUI/types/GameUIProps';
 import { PlayerUI } from '../../../player/components/PlayerUI';
 import type { NimCustomGameConfig } from '../types/NimCustomGameConfig';
@@ -50,6 +50,12 @@ export const NimGameUI: React.FC<
   const handleReset = useCallback(() => {
     setSelection(null);
   }, []);
+
+  useEffect(() => {
+    if (gameState.gameResult) {
+      setSelection(null);
+    }
+  }, [gameState.gameResult]);
 
   if (gameState.gameResult) {
     return (

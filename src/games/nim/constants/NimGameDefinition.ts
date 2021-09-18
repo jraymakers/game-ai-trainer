@@ -42,6 +42,18 @@ export const NimGameDefinition: GameDefinition<
     };
   },
 
+  getLegalActions: (gameConfig, gameState) => {
+    const { customGameState } = gameState;
+    const { currentRows } = customGameState;
+    const actions: NimGameAction[] = [];
+    currentRows.forEach((rowItemCount, rowIndex) => {
+      for (let itemsToRemove = rowItemCount; itemsToRemove >= 1; itemsToRemove--) {
+        actions.push({ rowIndex, itemsToRemove });
+      }
+    });
+    return actions;
+  },
+
   getStateAfterAction: (gameConfig, gameState, gameAction) => {
     const { players, customGameConfig } = gameConfig;
     const { currentPlayerIndex, customGameState } = gameState;

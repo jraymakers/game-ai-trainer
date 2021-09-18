@@ -39,16 +39,30 @@ export const TicTacToeGameDefinition: GameDefinition<
     };
   },
 
+  getLegalActions: (gameConfig, gameState) => {
+    const { customGameState } = gameState;
+    const { grid } = customGameState;
+    const actions: TicTacToeGameAction[] = [];
+    grid.forEach((gridRow, rowIndex) => {
+      gridRow.forEach((cell, colIndex) => {
+        if (cell === null) {
+          actions.push({ rowIndex, colIndex });
+        }
+      });
+    });
+    return actions;
+  },
+
   getStateAfterAction: (gameConfig, gameState, gameAction) => {
     const { players } = gameConfig;
     const { currentPlayerIndex, customGameState } = gameState;
     const { grid } = customGameState;
-    const { row, col } = gameAction;
+    const { rowIndex: actionRowIndex, colIndex: actionColIndex } = gameAction;
     const nextCurrentPlayerIndex = nextIndex(currentPlayerIndex, players);
     const nextGrid = grid.map(
       (gridRow, rowIndex) =>
-        rowIndex === row
-          ? gridRow.map((cell, colIndex) => colIndex === col ? currentPlayerIndex : cell)
+      rowIndex === actionRowIndex
+          ? gridRow.map((cell, colIndex) => colIndex === actionColIndex ? currentPlayerIndex : cell)
           : gridRow
     );
     const nextGameResult = getTicTacToeGameResult(nextGrid);
