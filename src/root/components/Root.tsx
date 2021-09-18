@@ -4,11 +4,15 @@ import type { GameRegistration } from '../../gameRegistration/types/GameRegistra
 import { GameRunner } from '../../gameRunner/components/GameRunner';
 import { GameSelector } from '../../gameSelection/components/GameSelector';
 import type { Player } from '../../player/types/Player';
+import { PlayerType } from '../../player/types/PlayerType';
 import { PlayerRosterEditorUI } from '../../playerRoster/components/PlayerRosterEditorUI';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
 
 export const Root: React.FC = () => {
-  const [playerRoster, setPlayerRoster] = useState<PlayerRoster>(() => ({}));
+  const [playerRoster, setPlayerRoster] = useState<PlayerRoster>(() => ({
+    'Computer': { id: 'Computer', type: PlayerType.Computer },
+    'Human': { id: 'Human', type: PlayerType.Human },
+  }));
 
   const handleAddNewPlayer = useCallback((newPlayer: Player) => {
     setPlayerRoster({

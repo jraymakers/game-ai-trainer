@@ -34,15 +34,18 @@ export const GameRunner: React.FC<{
   useEffect(() => {
     if (gameConfig && gameState && !gameState.gameResult) {
       if (gameConfig.players[gameState.currentPlayerIndex].type === PlayerType.Computer) {
-        const actions = gameDefinition.getLegalActions(gameConfig, gameState);
-        console.log(actions);
-        if (actions.length > 0) {
-          const action = actions[Math.floor(Math.random() * actions.length)];
-          console.log(action);
-          handleGameAction(action);
-        } else {
-          console.warn('no legal actions!');
-        }
+        const timerId = setTimeout(() => {
+          const actions = gameDefinition.getLegalActions(gameConfig, gameState);
+          console.log(actions);
+          if (actions.length > 0) {
+            const action = actions[Math.floor(Math.random() * actions.length)];
+            console.log(action);
+            handleGameAction(action);
+          } else {
+            console.warn('no legal actions!');
+          }
+        }, 500);
+        return () => clearTimeout(timerId);
       }
     }
   }, [gameDefinition, gameConfig, gameState, handleGameAction]);
