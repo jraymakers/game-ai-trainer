@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import type { GameConfig } from '../../gameDefinition/types/GameConfig';
 import type { GameState } from '../../gameDefinition/types/GameState';
 import type { GameRegistration } from '../../gameRegistration/types/GameRegistration';
+import { RandomGameStrategy } from '../../gameStrategies/random/constants/RandomGameStrategy';
 import type { JsonObject } from '../../generalPurpose/types/Json';
 import { PlayerType } from '../../player/types/PlayerType';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
@@ -36,15 +37,8 @@ export const GameRunner: React.FC<{
       const currentPlayer = gameConfig.players[gameState.currentPlayerIndex];
       if (currentPlayer.type === PlayerType.Computer) {
         const timerId = setTimeout(() => {
-          const actions = gameDefinition.getLegalActions(gameState, gameConfig);
-          console.log(actions);
-          if (actions.length > 0) {
-            const action = actions[Math.floor(Math.random() * actions.length)];
-            console.log(action);
-            handleGameAction(action);
-          } else {
-            console.warn('no legal actions!');
-          }
+          const action = RandomGameStrategy.getNextAction(gameState, gameConfig, gameDefinition);
+          handleGameAction(action);
         }, 500);
         return () => clearTimeout(timerId);
       }
