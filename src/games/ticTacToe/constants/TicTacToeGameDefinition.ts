@@ -39,7 +39,7 @@ export const TicTacToeGameDefinition: GameDefinition<
     };
   },
 
-  getLegalActions: (gameConfig, gameState) => {
+  getLegalActions: (gameState) => {
     const { customGameState } = gameState;
     const { grid } = customGameState;
     const actions: TicTacToeGameAction[] = [];
@@ -53,7 +53,7 @@ export const TicTacToeGameDefinition: GameDefinition<
     return actions;
   },
 
-  getStateAfterAction: (gameConfig, gameState, gameAction) => {
+  getStateAfterAction: (gameAction, gameState, gameConfig) => {
     const { players } = gameConfig;
     const { currentPlayerIndex, customGameState } = gameState;
     const { grid } = customGameState;

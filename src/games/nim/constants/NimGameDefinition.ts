@@ -42,7 +42,7 @@ export const NimGameDefinition: GameDefinition<
     };
   },
 
-  getLegalActions: (gameConfig, gameState) => {
+  getLegalActions: (gameState) => {
     const { customGameState } = gameState;
     const { currentRows } = customGameState;
     const actions: NimGameAction[] = [];
@@ -54,7 +54,7 @@ export const NimGameDefinition: GameDefinition<
     return actions;
   },
 
-  getStateAfterAction: (gameConfig, gameState, gameAction) => {
+  getStateAfterAction: (gameAction, gameState, gameConfig) => {
     const { players, customGameConfig } = gameConfig;
     const { currentPlayerIndex, customGameState } = gameState;
     const { currentRows } = customGameState;

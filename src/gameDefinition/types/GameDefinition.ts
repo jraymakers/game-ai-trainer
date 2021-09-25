@@ -13,14 +13,14 @@ export type GameDefinition<TCustomGameConfig, TCustomGameState, TGameAction, TGa
   ) => GameState<TCustomGameState, TGameResult>;
 
   getLegalActions: (
-    gameConfig: GameConfig<TCustomGameConfig>,
     gameState: GameState<TCustomGameState, TGameResult>,
+    gameConfig: GameConfig<TCustomGameConfig>,
   ) => readonly TGameAction[];
 
   getStateAfterAction: (
-    gameConfig: GameConfig<TCustomGameConfig>,
-    gameState: GameState<TCustomGameState, TGameResult>,
     gameAction: TGameAction,
+    gameState: GameState<TCustomGameState, TGameResult>,
+    gameConfig: GameConfig<TCustomGameConfig>,
   ) => GameState<TCustomGameState, TGameResult>;
 
 }>;

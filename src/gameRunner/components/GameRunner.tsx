@@ -27,7 +27,7 @@ export const GameRunner: React.FC<{
 
   const handleGameAction = useCallback((gameAction: JsonObject) => {
     if (gameConfig && gameState) {
-      setGameState(gameDefinition.getStateAfterAction(gameConfig, gameState, gameAction));
+      setGameState(gameDefinition.getStateAfterAction(gameAction, gameState, gameConfig));
     }
   }, [gameDefinition, gameConfig, gameState]);
 
@@ -35,7 +35,7 @@ export const GameRunner: React.FC<{
     if (gameConfig && gameState && !gameState.gameResult) {
       if (gameConfig.players[gameState.currentPlayerIndex].type === PlayerType.Computer) {
         const timerId = setTimeout(() => {
-          const actions = gameDefinition.getLegalActions(gameConfig, gameState);
+          const actions = gameDefinition.getLegalActions(gameState, gameConfig);
           console.log(actions);
           if (actions.length > 0) {
             const action = actions[Math.floor(Math.random() * actions.length)];
