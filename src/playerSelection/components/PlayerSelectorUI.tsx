@@ -23,7 +23,7 @@ export const PlayerSelectorUI: React.FC<{
     onRemoveSelectedPlayer(playerIndex);
   }, [onRemoveSelectedPlayer, playerIndex]);
   return (
-    <div>
+    <div style={{ margin: 6 }}>
       <select value={selectedPlayerId} onChange={handleChange}>
         {!selectedPlayerId ? <option key="" value="">Select a player</option> : null}
         {availablePlayers.map(player =>

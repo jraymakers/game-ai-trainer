@@ -48,7 +48,7 @@ export const PlayerRosterEditorUI: React.FC<{
 
   return (
     <div>
-      <div>Players: {players.length}</div>
+      <div>Total Players: {players.length}</div>
       <div>
         {players.map(player =>
           <PlayerRosterEditorItemUI
@@ -59,22 +59,21 @@ export const PlayerRosterEditorUI: React.FC<{
         )}
       </div>
       <div>
-        <div>
+        <div>Create New Player</div>
+        <div style={{ margin: 6 }}>
           <label htmlFor="new_player_name_input">Name: </label>
           <input id="new_player_name_input" type="text" value={newPlayerId}
             onChange={handleChangeNewPlayerId}
             onKeyDown={handleInputKeyDown}
           />
-        </div>
-        <div>
-          <select value={newPlayerType} onChange={handlePlayerTypeChange}>
+          <select value={newPlayerType} onChange={handlePlayerTypeChange} style={{ marginLeft: 6 }}>
             {Object.keys(PlayerType).map(playerType => 
               <option key={playerType} value={playerType}>{playerType}</option>
             )}
           </select>
-        </div>
-        <div>
-          <button onClick={handleAddNewPlayer} disabled={!isNewPlayerIdValid}>Add New Player</button>
+          <button onClick={handleAddNewPlayer} disabled={!isNewPlayerIdValid} style={{ marginLeft: 6 }}>
+            Create
+          </button>
         </div>
       </div>
     </div>

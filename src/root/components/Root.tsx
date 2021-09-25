@@ -10,8 +10,10 @@ import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
 
 export const Root: React.FC = () => {
   const [playerRoster, setPlayerRoster] = useState<PlayerRoster>(() => ({
-    'Computer': { id: 'Computer', type: PlayerType.Computer },
-    'Human': { id: 'Human', type: PlayerType.Human },
+    'Computer1': { id: 'Computer1', type: PlayerType.Computer },
+    'Computer2': { id: 'Computer2', type: PlayerType.Computer },
+    'Human1': { id: 'Human1', type: PlayerType.Human },
+    'Human2': { id: 'Human2', type: PlayerType.Human },
   }));
 
   const handleAddNewPlayer = useCallback((newPlayer: Player) => {
@@ -38,19 +40,23 @@ export const Root: React.FC = () => {
 
   return (
     <div>
-      <div>Game AI Trainer</div>
+      <div style={{ margin: 12 }}>Game AI Trainer</div>
       
       <div>
         {selectedGame ? (
           <GameRunner playerRoster={playerRoster} game={selectedGame} onLeaveGame={handleLeaveGame} />
         ) : (
           <div>
-            <PlayerRosterEditorUI
-              playerRoster={playerRoster}
-              onAddNewPlayer={handleAddNewPlayer}
-              onRemovePlayer={handleRemovePlayer}
-            />
-            <GameSelector games={gameCatalog} onSelectGame={handleSelectGame} />
+            <div style={{ margin: 12 }}>
+              <PlayerRosterEditorUI
+                playerRoster={playerRoster}
+                onAddNewPlayer={handleAddNewPlayer}
+                onRemovePlayer={handleRemovePlayer}
+              />
+            </div>
+            <div style={{ margin: 12 }}>
+              <GameSelector games={gameCatalog} onSelectGame={handleSelectGame} />
+            </div>
           </div>
         )}
       </div>

@@ -37,7 +37,7 @@ export const NimGameConfigUI: React.FC<GameConfigUIProps<NimCustomGameConfig>> =
 
   return (
     <div>
-      <div>
+      <div style={{ marginTop: 6 }}>
         <div>Initial Rows</div>
         <div>
           {customGameConfig.initialRows.map((rowItemCount, index) =>
@@ -50,11 +50,11 @@ export const NimGameConfigUI: React.FC<GameConfigUIProps<NimCustomGameConfig>> =
             />
           )}
         </div>
-        <div>
+        <div style={{ margin: 6 }}>
           <button onClick={handleAddNewRow}>Add Row</button>
         </div>
       </div>
-      <div>
+      <div style={{ marginTop: 6 }}>
         <input id="misere_checkbox" type="checkbox" onChange={handleClickMisere} checked={customGameConfig.misere} />
         <label htmlFor="misere_checkbox">Misere?</label>
       </div>

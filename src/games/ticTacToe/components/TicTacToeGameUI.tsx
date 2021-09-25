@@ -20,14 +20,14 @@ export const TicTacToeGameUI: React.FC<
   if (gameState.gameResult) {
     return (
       <div>
-        <div>Game over!</div>
+        <span>Game over! </span>
         {gameState.gameResult.winnerIndex !== null ? (
-          <div>
+          <>
             <span>Winner: </span>
             <PlayerUI player={gameConfig.players[gameState.gameResult.winnerIndex]} />
-          </div>
+          </>
         ) : (
-          <div>Draw!</div>
+          <span>Draw!</span>
         )}
         <TicTacToeGridUI grid={gameState.customGameState.grid} />
       </div>

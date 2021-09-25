@@ -43,23 +43,27 @@ export const GameConfigEditor: React.FC<{
 
   return (
     <div>
-      <div>Configure Game: {game.displayName}</div>
-      <PlayerSelectionUI
-        playerRoster={playerRoster}
-        minPlayerCount={game.definition.getMinPlayerCount()}
-        maxPlayerCount={game.definition.getMaxPlayerCount()}
-        selectedPlayerIds={selectedPlayerIds}
-        onSelectedPlayerIdsChanged={setSelectedPlayerIds}
-      />
-      {game.customConfigUI ? (
-        <game.customConfigUI
-          customGameConfig={customGameConfig}
-          onCustomGameConfigChanged={setCustomGameConfig}
+      <div style={{ margin: 12 }}>Configure Game: {game.displayName}</div>
+      <div style={{ margin: 12 }}>
+        <PlayerSelectionUI
+          playerRoster={playerRoster}
+          minPlayerCount={game.definition.getMinPlayerCount()}
+          maxPlayerCount={game.definition.getMaxPlayerCount()}
+          selectedPlayerIds={selectedPlayerIds}
+          onSelectedPlayerIdsChanged={setSelectedPlayerIds}
         />
+      </div>
+      {game.customConfigUI ? (
+        <div style={{ margin: 12 }}>
+          <game.customConfigUI
+            customGameConfig={customGameConfig}
+            onCustomGameConfigChanged={setCustomGameConfig}
+          />
+        </div>
       ) : null}
-      <div>
+      <div style={{ margin: 12 }}>
         <button onClick={handleStartGame} disabled={somePlayersUndefined}>Start Game</button>
-        <button onClick={onCancel}>Cancel</button>
+        <button onClick={onCancel} style={{ marginLeft: 6 }}>Cancel</button>
       </div>
     </div>
   );

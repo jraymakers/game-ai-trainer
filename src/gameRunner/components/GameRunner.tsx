@@ -33,7 +33,8 @@ export const GameRunner: React.FC<{
 
   useEffect(() => {
     if (gameConfig && gameState && !gameState.gameResult) {
-      if (gameConfig.players[gameState.currentPlayerIndex].type === PlayerType.Computer) {
+      const currentPlayer = gameConfig.players[gameState.currentPlayerIndex];
+      if (currentPlayer.type === PlayerType.Computer) {
         const timerId = setTimeout(() => {
           const actions = gameDefinition.getLegalActions(gameState, gameConfig);
           console.log(actions);
@@ -60,15 +61,17 @@ export const GameRunner: React.FC<{
     <div>
       {gameConfig && gameState ? (
         <div>
-          <div>Current Game: {game.displayName}</div>
-          <game.gameUI
-            gameConfig={gameConfig}
-            gameState={gameState}
-            onGameAction={handleGameAction}
-          />
-          <div>
+          <div style={{ margin: 12 }}>Current Game: {game.displayName}</div>
+          <div style={{ margin: 12 }}>
+            <game.gameUI
+              gameConfig={gameConfig}
+              gameState={gameState}
+              onGameAction={handleGameAction}
+            />
+          </div>
+          <div style={{ margin: 12 }}>
             <button onClick={handleResetGame}>Reset Game</button>
-            <button onClick={onLeaveGame}>Leave Game</button>
+            <button onClick={onLeaveGame} style={{ marginLeft: 6 }}>Leave Game</button>
           </div>
         </div>
       ) : (

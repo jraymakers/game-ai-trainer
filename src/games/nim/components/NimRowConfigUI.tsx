@@ -23,9 +23,9 @@ export const RowConfigEntry: React.FC<{
     }
   }, [rowIndex, onRemoveRow]);
   return (
-    <div>
-      <input type="number" onChange={handleChange} value={rowItemCount} />
-      {onRemoveRow ? <button onClick={handleRemove}>Remove</button> : null}
+    <div style={{ margin: 6 }}>
+      <input type="number" onChange={handleChange} value={rowItemCount} style={{ width: 50 }} />
+      {onRemoveRow ? <button onClick={handleRemove} style={{ marginLeft: 6 }}>Remove</button> : null}
     </div>
   );
 };

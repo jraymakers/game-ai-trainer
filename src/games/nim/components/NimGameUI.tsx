@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import type { GameUIProps } from '../../../gameUI/types/GameUIProps';
 import { PlayerUI } from '../../../player/components/PlayerUI';
+import { PlayerType } from '../../../player/types/PlayerType';
 import type { NimCustomGameConfig } from '../types/NimCustomGameConfig';
 import type { NimCustomGameState } from '../types/NimCustomGameState';
 import type { NimGameAction } from '../types/NimGameAction';
 import type { NimGameResult } from '../types/NimGameResult';
-import type { NimSelection } from '../types/NimSelection';
 import { NimRowUI } from './NimRowUI';
 
 export const NimGameUI: React.FC<
@@ -15,86 +15,64 @@ export const NimGameUI: React.FC<
   gameState,
   onGameAction,
 }) => {
-  const [selection, setSelection] = useState<NimSelection | null>(null);
+  const currentRows = gameState.customGameState.currentRows;
+  const currentPlayer = gameConfig.players[gameState.currentPlayerIndex];
+  const currentPlayerHuman = currentPlayer.type === PlayerType.Human;
+
+  const [hoverState, setHoverState] = useState<{ rowIndex: number, itemIndex: number } | null>(null);
+
+  const handleMouseEnterItem = useCallback((rowIndex: number, itemIndex: number) => {
+    setHoverState({ rowIndex, itemIndex });
+  },[]);
+
+  const handleMouseLeaveItem = useCallback((_rowIndex: number, _itemIndex: number) => {
+    setHoverState(null);
+  },[]);
 
   const handleClickItem = useCallback((rowIndex: number, itemIndex: number) => {
-    if (selection && selection.rowIndex === rowIndex) {
-      if (selection.selectedItems[itemIndex]) {
-        const { [itemIndex]: _, ...rest } = selection.selectedItems;
-        setSelection({
-          rowIndex: selection.rowIndex,
-          selectedItems: rest,
-        });
-      } else {
-        setSelection({
-          rowIndex: selection.rowIndex,
-          selectedItems: { ...selection.selectedItems, [itemIndex]: true },
-        });
-      }
-    } else {
-      setSelection({ rowIndex, selectedItems: { [itemIndex]: true } });
-    }
-  }, [selection]);
-
-  const handleSubmit = useCallback(() => {
-    if (selection) {
-      const action: NimGameAction = {
-        rowIndex: selection.rowIndex,
-        itemsToRemove: Object.keys(selection.selectedItems).length,
-      };
-      setSelection(null);
-      onGameAction(action);
-    }
-  }, [selection, onGameAction]);
-
-  const handleReset = useCallback(() => {
-    setSelection(null);
-  }, []);
+    const itemsToRemove = currentRows[rowIndex] - itemIndex;
+    const action: NimGameAction = {
+      rowIndex,
+      itemsToRemove,
+    };
+    onGameAction(action);
+  }, [currentRows, onGameAction]);
 
   useEffect(() => {
     if (gameState.gameResult) {
-      setSelection(null);
+      setHoverState(null);
     }
   }, [gameState.gameResult]);
 
-  if (gameState.gameResult) {
-    return (
-      <div>
-        <div>Game over!</div>
+  return (
+    <div>
+      <div>Win condition: {gameConfig.customGameConfig.misere ? 'Last move loses' : 'Last move wins'}</div>
+      {gameState.gameResult ? (
         <div>
+          <span>Game over! </span>
           <span>Winner: </span>
           <PlayerUI player={gameConfig.players[gameState.gameResult.winnerIndex]} />
         </div>
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <div>Win condition: {gameConfig.customGameConfig.misere ? 'Last move loses' : 'Last move wins'}</div>
+      ) : (
         <div>
           <span>Current Turn: </span>
-          <PlayerUI player={gameConfig.players[gameState.currentPlayerIndex]} />
+          <PlayerUI player={currentPlayer} />
         </div>
-        <div style={{ cursor: 'pointer', fontSize: '48px', fontFamily: 'monospace' }}>
-          {gameState.customGameState.currentRows.map((rowItemCount, rowIndex) =>
-            <NimRowUI
-              key={rowIndex}
-              rowIndex={rowIndex}
-              rowItemCount={rowItemCount}
-              selectedItems={selection && selection.rowIndex === rowIndex ? selection.selectedItems : null}
-              onClickItem={handleClickItem}
-            />
-          )}
-        </div>
-        <div>
-          <span>
-            <button onClick={handleSubmit} disabled={!selection}>Submit</button>
-          </span>
-          <span>
-            <button onClick={handleReset} disabled={!selection}>Reset</button>
-          </span>
-        </div>
+      )}
+      <div style={{ cursor: 'pointer', fontSize: '48px', fontFamily: 'monospace' }}>
+        {currentRows.map((rowItemCount, rowIndex) =>
+          <NimRowUI
+            key={rowIndex}
+            rowIndex={rowIndex}
+            rowItemCount={rowItemCount}
+            initialRowItemCount={gameConfig.customGameConfig.initialRows[rowIndex]}
+            hoverItemIndex={hoverState && hoverState.rowIndex === rowIndex ? hoverState.itemIndex : null}
+            onMouseEnterItem={currentPlayerHuman ? handleMouseEnterItem : null}
+            onMouseLeaveItem={currentPlayerHuman ? handleMouseLeaveItem : null}
+            onClickItem={currentPlayerHuman ? handleClickItem : null}
+          />
+        )}
       </div>
-    );
-  }
+    </div>
+  );
 };

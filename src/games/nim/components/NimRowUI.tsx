@@ -1,26 +1,38 @@
 import React from 'react';
-import type { NimSelectedItems } from '../types/NimSelectedItems';
 import { NimItemUI } from './NimItemUI';
 
 export const NimRowUI: React.FC<{
   rowIndex: number;
   rowItemCount: number;
-  selectedItems: NimSelectedItems | null;
-  onClickItem: (rowIndex: number, itemIndex: number) => void;
+  initialRowItemCount: number;
+  hoverItemIndex: number | null;
+  onMouseEnterItem: ((rowIndex: number, itemIndex: number) => void) | null;
+  onMouseLeaveItem: ((rowIndex: number, itemIndex: number) => void) | null;
+  onClickItem: ((rowIndex: number, itemIndex: number) => void) | null;
 }> = ({
   rowIndex,
   rowItemCount,
-  selectedItems,
+  initialRowItemCount,
+  hoverItemIndex,
   onClickItem,
+  onMouseEnterItem,
+  onMouseLeaveItem,
 }) => {
   const items: React.ReactNode[] = [];
-  for (let i = 0; i < rowItemCount; i++) {
+  for (let i = 0; i < initialRowItemCount; i++) {
+    const state = i >= rowItemCount
+      ? 'removed'
+      : hoverItemIndex !== null && i >= hoverItemIndex
+        ? 'highlighted'
+        : 'available';
     items.push(
       <NimItemUI
         key={i}
         rowIndex={rowIndex}
         itemIndex={i}
-        selected={selectedItems ? selectedItems[i] : false}
+        state={state}
+        onMouseEnterItem={onMouseEnterItem}
+        onMouseLeaveItem={onMouseLeaveItem}
         onClickItem={onClickItem}
       />
     );

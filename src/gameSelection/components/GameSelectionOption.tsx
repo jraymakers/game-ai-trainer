@@ -12,7 +12,7 @@ export const GameSelectionOption: React.FC<{
     onSelectGame(game);
   }, [game, onSelectGame]);
   return (
-    <div>
+    <div style={{ margin: 6 }}>
       <button onClick={handleClick}>{game.displayName}</button>
     </div>
   );

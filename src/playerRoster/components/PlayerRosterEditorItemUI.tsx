@@ -13,9 +13,9 @@ export const PlayerRosterEditorItemUI: React.FC<{
     onRemovePlayer(player.id);
   }, [player, onRemovePlayer]);
   return (
-    <div>
+    <div style={{ margin: 6 }}>
       <PlayerUI player={player} />
-      <button onClick={handleClick}>Remove</button>
+      <button onClick={handleClick} style={{ marginLeft: 6 }}>Remove</button>
     </div>
   );
 };
