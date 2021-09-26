@@ -9,7 +9,7 @@ export type GameStrategy<
   TGameResult,
   TPlayerMemoryForGame
 > = Readonly<{
-  getNextActionAndPlayerGameState: (
+  getNextActionAndMemory: (
     gameState: GameState<TCustomGameState, TGameResult>,
     gameConfig: GameConfig<TCustomGameConfig>,
     gameDefinition: GameDefinition<TCustomGameConfig, TCustomGameState, TGameAction, TGameResult>,

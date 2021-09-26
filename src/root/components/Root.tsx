@@ -3,12 +3,15 @@ import { gameCatalog } from '../../gameCatalog/constants/gameCatalog';
 import type { GameRegistration } from '../../gameRegistration/types/GameRegistration';
 import { GameRunner } from '../../gameRunner/components/GameRunner';
 import { GameSelector } from '../../gameSelection/components/GameSelector';
+import { MonteCarloTreeSearchGameStrategyRegistration } from '../../gameStrategies/monteCarloTreeSearch/constants/MonteCarloTreeSearchGameStrategyRegistration';
+import { RandomGameStrategyRegistration } from '../../gameStrategies/random/constants/RandomGameStrategyRegistration';
 import type { Player } from '../../player/types/Player';
 import { PlayerType } from '../../player/types/PlayerType';
 import type { PlayerMemory } from '../../playerMemory/types/PlayerMemory';
 import type { PlayerMemoryStore } from '../../playerMemory/types/PlayerMemoryStore';
 import { PlayerRosterEditorUI } from '../../playerRoster/components/PlayerRosterEditorUI';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
+import type { PlayerStrategiesStore } from '../../playerStrategies/types/PlayerStrategiesStore';
 
 export const Root: React.FC = () => {
   const [playerRoster, setPlayerRoster] = useState<PlayerRoster>(() => ({
@@ -29,6 +32,17 @@ export const Root: React.FC = () => {
     const { [playerId]: _, ...rest } = playerRoster;
     setPlayerRoster(rest);
   }, [playerRoster]);
+
+  const [playerStrategiesStore, _setPlayerStrategiesStore] = useState<PlayerStrategiesStore>(() => ({
+    'Computer1': {
+      'Nim': RandomGameStrategyRegistration,
+      'Tic-Tac-Toe': RandomGameStrategyRegistration,
+    },
+    'Computer2': {
+      'Nim': MonteCarloTreeSearchGameStrategyRegistration,
+      'Tic-Tac-Toe': MonteCarloTreeSearchGameStrategyRegistration,
+    }
+  }));
 
   const [playerMemoryStore, setPlayerMemoryStore] = useState<PlayerMemoryStore>(() => ({}));
 
@@ -59,6 +73,7 @@ export const Root: React.FC = () => {
           <GameRunner
             game={selectedGame}  
             playerRoster={playerRoster}
+            playerStrategiesStore={playerStrategiesStore}
             playerMemoryStore={playerMemoryStore}
             setPlayerMemory={setPlayerMemory}
             onLeaveGame={handleLeaveGame}

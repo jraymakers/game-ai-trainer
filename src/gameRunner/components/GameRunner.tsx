@@ -1,27 +1,27 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import type { GameConfig } from '../../gameDefinition/types/GameConfig';
 import type { GameState } from '../../gameDefinition/types/GameState';
 import type { GameRegistration } from '../../gameRegistration/types/GameRegistration';
-import { RandomGameStrategy } from '../../gameStrategies/random/constants/RandomGameStrategy';
-import type { GameStrategy } from '../../gameStrategy/types/GameStrategy';
+import { RandomGameStrategyRegistration } from '../../gameStrategies/random/constants/RandomGameStrategyRegistration';
 import type { JsonObject } from '../../generalPurpose/types/Json';
 import { PlayerType } from '../../player/types/PlayerType';
 import type { PlayerMemory } from '../../playerMemory/types/PlayerMemory';
 import type { PlayerMemoryStore } from '../../playerMemory/types/PlayerMemoryStore';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
+import type { PlayerStrategiesStore } from '../../playerStrategies/types/PlayerStrategiesStore';
 import { GameConfigEditor } from './GameConfigEditor';
-
-const strategy: GameStrategy<JsonObject, JsonObject, JsonObject, JsonObject, JsonObject> = RandomGameStrategy;
 
 export const GameRunner: React.FC<{
   game: GameRegistration;
   playerRoster: PlayerRoster;
+  playerStrategiesStore: PlayerStrategiesStore;
   playerMemoryStore: PlayerMemoryStore;
   setPlayerMemory: (playerId: string, newPlayerMemory: PlayerMemory) => void;
   onLeaveGame: () => void;
 }> = ({
   game,
   playerRoster,
+  playerStrategiesStore,
   playerMemoryStore,
   setPlayerMemory,
   onLeaveGame,
@@ -41,17 +41,35 @@ export const GameRunner: React.FC<{
     }
   }, [gameDefinition, gameConfig, gameState]);
 
+  const playerStrategiesStoreRef = useRef(playerStrategiesStore);
+  playerStrategiesStoreRef.current = playerStrategiesStore;
+
+  const playerMemoryStoreRef = useRef(playerMemoryStore);
+  playerMemoryStoreRef.current = playerMemoryStore;
+
+  const setPlayerMemoryRef = useRef(setPlayerMemory);
+  setPlayerMemoryRef.current = setPlayerMemory;
+
   useEffect(() => {
     if (gameConfig && gameState && !gameState.gameResult) {
       const currentPlayer = gameConfig.players[gameState.currentPlayerIndex];
       if (currentPlayer.type === PlayerType.Computer) {
         const timerId = setTimeout(() => {
-          const currentPlayerMemory = playerMemoryStore[currentPlayer.id];
-          const currentPlayerMemoryForGame = currentPlayerMemory && currentPlayerMemory.memoryForGame[game.displayName] || {};
+
+          const currentPlayerMemory = playerMemoryStoreRef.current[currentPlayer.id];
+          const currentPlayerMemoryForGame =
+            currentPlayerMemory && currentPlayerMemory.memoryForGame[game.displayName] || {};
+
+          const currentPlayerStrategies = playerStrategiesStoreRef.current[currentPlayer.id];
+          const currentPlayerStrategyForGame =
+            currentPlayerStrategies && currentPlayerStrategies[game.displayName] || RandomGameStrategyRegistration;
+
           const { nextAction, nextPlayerMemoryForGame } =
-            strategy.getNextActionAndPlayerGameState(gameState, gameConfig, gameDefinition, currentPlayerMemoryForGame);
+            currentPlayerStrategyForGame.strategy.getNextActionAndMemory(
+              gameState, gameConfig, game.definition, currentPlayerMemoryForGame);
+
           if (nextPlayerMemoryForGame) {
-            setPlayerMemory(currentPlayer.id, {
+            setPlayerMemoryRef.current(currentPlayer.id, {
               ...currentPlayerMemory,
               memoryForGame: {
                 ...(currentPlayerMemory ? currentPlayerMemory.memoryForGame : {}),
@@ -59,16 +77,18 @@ export const GameRunner: React.FC<{
               }
             });
           }
+
           if (nextAction) {
-            handleGameAction(nextAction);
+            setGameState(game.definition.getStateAfterAction(nextAction, gameState, gameConfig));
           } else {
             console.warn('no legal actions!');
           }
+
         }, 500);
         return () => clearTimeout(timerId);
       }
     }
-  }, [gameDefinition, gameConfig, gameState, handleGameAction, playerMemoryStore, game.displayName, setPlayerMemory]);
+  }, [game, gameConfig, gameState]);
 
   const handleResetGame = useCallback(() => {
     if (gameConfig) {

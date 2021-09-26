@@ -1,13 +1,13 @@
 import type { GameStrategy } from '../../../gameStrategy/types/GameStrategy';
 import type { JsonObject } from '../../../generalPurpose/types/Json';
-import type { RandomGameStrategyMemory } from '../types/RandomGameStrategyMemory';
+import type { MonteCarloTreeSearchGameStrategyMemory } from '../types/MonteCarloTreeSearchGameStrategyMemory';
 
-export const RandomGameStrategy: GameStrategy<
+export const MonteCarloTreeSearchGameStrategy: GameStrategy<
   JsonObject,
   JsonObject,
   JsonObject,
   JsonObject,
-  RandomGameStrategyMemory
+  MonteCarloTreeSearchGameStrategyMemory
 > = {
   getNextActionAndMemory: (gameState, gameConfig, gameDefinition, playerMemoryForGame) => {
     const actions = gameDefinition.getLegalActions(gameState, gameConfig);
@@ -16,7 +16,7 @@ export const RandomGameStrategy: GameStrategy<
       return {
         nextAction,
         nextPlayerMemoryForGame: {
-          actionsTaken: (playerMemoryForGame.actionsTaken || 0) + 1,
+          n: (playerMemoryForGame.n || 0) + 1,
         },
       };
     }
