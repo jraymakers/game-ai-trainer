@@ -5,8 +5,8 @@ import type { GameRegistration } from '../../gameRegistration/types/GameRegistra
 import { RandomGameStrategyRegistration } from '../../gameStrategies/random/constants/RandomGameStrategyRegistration';
 import type { JsonObject } from '../../generalPurpose/types/Json';
 import { PlayerType } from '../../player/types/PlayerType';
-import type { PlayerMemory } from '../../playerMemory/types/PlayerMemory';
-import type { PlayerMemoryStore } from '../../playerMemory/types/PlayerMemoryStore';
+import type { PlayerMemory } from '../../memory/types/PlayerMemory';
+import type { MemoryStore } from '../../memory/types/MemoryStore';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
 import type { PlayerStrategiesStore } from '../../playerStrategies/types/PlayerStrategiesStore';
 import { GameConfigEditor } from './GameConfigEditor';
@@ -15,14 +15,14 @@ export const GameRunner: React.FC<{
   game: GameRegistration;
   playerRoster: PlayerRoster;
   playerStrategiesStore: PlayerStrategiesStore;
-  playerMemoryStore: PlayerMemoryStore;
+  memoryStore: MemoryStore;
   setPlayerMemory: (playerId: string, newPlayerMemory: PlayerMemory) => void;
   onLeaveGame: () => void;
 }> = ({
   game,
   playerRoster,
   playerStrategiesStore,
-  playerMemoryStore,
+  memoryStore,
   setPlayerMemory,
   onLeaveGame,
 }) => {
@@ -44,8 +44,8 @@ export const GameRunner: React.FC<{
   const playerStrategiesStoreRef = useRef(playerStrategiesStore);
   playerStrategiesStoreRef.current = playerStrategiesStore;
 
-  const playerMemoryStoreRef = useRef(playerMemoryStore);
-  playerMemoryStoreRef.current = playerMemoryStore;
+  const memoryStoreRef = useRef(memoryStore);
+  memoryStoreRef.current = memoryStore;
 
   const setPlayerMemoryRef = useRef(setPlayerMemory);
   setPlayerMemoryRef.current = setPlayerMemory;
@@ -56,32 +56,41 @@ export const GameRunner: React.FC<{
       if (currentPlayer.type === PlayerType.Computer) {
         const timerId = setTimeout(() => {
 
-          const currentPlayerMemory = playerMemoryStoreRef.current[currentPlayer.id];
-          const currentPlayerMemoryForGame =
-            currentPlayerMemory && currentPlayerMemory.memoryForGame[game.displayName] || {};
-
           const currentPlayerStrategies = playerStrategiesStoreRef.current[currentPlayer.id];
-          const currentPlayerStrategyForGame =
-            currentPlayerStrategies && currentPlayerStrategies[game.displayName] || RandomGameStrategyRegistration;
+          const currentPlayerGameStrategy = currentPlayerStrategies &&
+            currentPlayerStrategies[game.displayName] || RandomGameStrategyRegistration;
 
-          const { nextAction, nextPlayerMemoryForGame } =
-            currentPlayerStrategyForGame.strategy.getNextActionAndMemory(
-              gameState, gameConfig, game.definition, currentPlayerMemoryForGame);
+          const currentPlayerMemory = memoryStoreRef.current.playerMemories[currentPlayer.id];
+          const currentPlayerGameMemory = currentPlayerMemory &&
+            currentPlayerMemory.gameMemories[game.displayName];
+          const currentPlayerStrategyMemory = currentPlayerGameMemory &&
+            currentPlayerGameMemory.strategyMemories[currentPlayerGameStrategy.displayName];
 
-          if (nextPlayerMemoryForGame) {
-            setPlayerMemoryRef.current(currentPlayer.id, {
-              ...currentPlayerMemory,
-              memoryForGame: {
-                ...(currentPlayerMemory ? currentPlayerMemory.memoryForGame : {}),
-                [game.displayName]: nextPlayerMemoryForGame,
-              }
-            });
-          }
+          const nextActionAndMemory =
+            currentPlayerGameStrategy.definition.getNextActionAndMemory(
+              gameState, gameConfig, game.definition, currentPlayerStrategyMemory);
 
-          if (nextAction) {
+          if (nextActionAndMemory) {
+            const { nextAction, nextMemory } = nextActionAndMemory;
+            if (nextMemory) {
+              setPlayerMemoryRef.current(currentPlayer.id, {
+                ...currentPlayerMemory,
+                gameMemories: {
+                  ...(currentPlayerMemory ? currentPlayerMemory.gameMemories : {}),
+                  [game.displayName]: {
+                    ...currentPlayerGameMemory,
+                    strategyMemories: {
+                      ...(currentPlayerGameMemory ? currentPlayerGameMemory.strategyMemories : {}),
+                      [currentPlayerGameStrategy.displayName]: nextMemory,
+                    }
+                  }
+                }
+              });
+            }
+
             setGameState(game.definition.getStateAfterAction(nextAction, gameState, gameConfig));
           } else {
-            console.warn('no legal actions!');
+            console.warn('strategy did not return an action!');
           }
 
         }, 500);

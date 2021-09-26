@@ -7,8 +7,8 @@ import { MonteCarloTreeSearchGameStrategyRegistration } from '../../gameStrategi
 import { RandomGameStrategyRegistration } from '../../gameStrategies/random/constants/RandomGameStrategyRegistration';
 import type { Player } from '../../player/types/Player';
 import { PlayerType } from '../../player/types/PlayerType';
-import type { PlayerMemory } from '../../playerMemory/types/PlayerMemory';
-import type { PlayerMemoryStore } from '../../playerMemory/types/PlayerMemoryStore';
+import type { PlayerMemory } from '../../memory/types/PlayerMemory';
+import type { MemoryStore } from '../../memory/types/MemoryStore';
 import { PlayerRosterEditorUI } from '../../playerRoster/components/PlayerRosterEditorUI';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
 import type { PlayerStrategiesStore } from '../../playerStrategies/types/PlayerStrategiesStore';
@@ -44,15 +44,18 @@ export const Root: React.FC = () => {
     }
   }));
 
-  const [playerMemoryStore, setPlayerMemoryStore] = useState<PlayerMemoryStore>(() => ({}));
+  const [memoryStore, setMemoryStore] = useState<MemoryStore>(() => ({ playerMemories: {} }));
 
   const setPlayerMemory = useCallback((playerId: string, newPlayerMemory: PlayerMemory) => {
     console.log(playerId, newPlayerMemory);
-    setPlayerMemoryStore({
-      ...playerMemoryStore,
-      [playerId]: newPlayerMemory,
+    setMemoryStore({
+      ...memoryStore,
+      playerMemories: {
+        ...memoryStore.playerMemories,
+        [playerId]: newPlayerMemory,
+      }
     });
-  }, [playerMemoryStore]);
+  }, [memoryStore]);
 
   const [selectedGame, setSelectedGame] = useState<GameRegistration | null>(null);
   
@@ -74,7 +77,7 @@ export const Root: React.FC = () => {
             game={selectedGame}  
             playerRoster={playerRoster}
             playerStrategiesStore={playerStrategiesStore}
-            playerMemoryStore={playerMemoryStore}
+            memoryStore={memoryStore}
             setPlayerMemory={setPlayerMemory}
             onLeaveGame={handleLeaveGame}
           />

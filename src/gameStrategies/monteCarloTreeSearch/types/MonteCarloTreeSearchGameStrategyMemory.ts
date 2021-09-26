@@ -1,3 +1,3 @@
 export type MonteCarloTreeSearchGameStrategyMemory = Readonly<{
-  readonly n?: number;
+  readonly actionsTaken: number;
 }>;

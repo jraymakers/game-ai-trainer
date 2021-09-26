@@ -1,6 +1,6 @@
-import type { AnyGameStrategy } from './AnyGameStrategy';
+import type { AnyGameStrategyDefinition } from './AnyGameStrategyDefinition';
 
 export type GameStrategyRegistration = Readonly<{
   displayName: string;
-  strategy: AnyGameStrategy;
+  definition: AnyGameStrategyDefinition;
 }>;

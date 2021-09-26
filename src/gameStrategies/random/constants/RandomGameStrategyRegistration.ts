@@ -1,8 +1,8 @@
-import type { AnyGameStrategy } from '../../../gameStrategyRegistration/types/AnyGameStrategy';
+import type { AnyGameStrategyDefinition } from '../../../gameStrategyRegistration/types/AnyGameStrategyDefinition';
 import type { GameStrategyRegistration } from '../../../gameStrategyRegistration/types/GameStrategyRegistration';
-import { RandomGameStrategy } from './RandomGameStrategy';
+import { RandomGameStrategyDefinition } from './RandomGameStrategyDefinition';
 
 export const RandomGameStrategyRegistration: GameStrategyRegistration = {
   displayName: 'Random',
-  strategy: RandomGameStrategy as AnyGameStrategy,
+  definition: RandomGameStrategyDefinition as AnyGameStrategyDefinition,
 };
