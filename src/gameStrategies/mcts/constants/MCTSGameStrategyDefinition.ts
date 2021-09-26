@@ -48,7 +48,10 @@ export const MCTSGameStrategyDefinition: GameStrategyDefinition<
 
       return {
         nextAction,
-        nextMemory: memory,
+        nextMemory: {
+          totalActionsTaken: (memory ? memory.totalActionsTaken : 0) + 1,
+          stateMemories: (memory ? memory.stateMemories : {}),
+        }
       };
 
     }
