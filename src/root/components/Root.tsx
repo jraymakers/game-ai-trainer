@@ -5,6 +5,8 @@ import { GameRunner } from '../../gameRunner/components/GameRunner';
 import { GameSelector } from '../../gameSelection/components/GameSelector';
 import type { Player } from '../../player/types/Player';
 import { PlayerType } from '../../player/types/PlayerType';
+import type { PlayerMemory } from '../../playerMemory/types/PlayerMemory';
+import type { PlayerMemoryStore } from '../../playerMemory/types/PlayerMemoryStore';
 import { PlayerRosterEditorUI } from '../../playerRoster/components/PlayerRosterEditorUI';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
 
@@ -28,6 +30,16 @@ export const Root: React.FC = () => {
     setPlayerRoster(rest);
   }, [playerRoster]);
 
+  const [playerMemoryStore, setPlayerMemoryStore] = useState<PlayerMemoryStore>(() => ({}));
+
+  const setPlayerMemory = useCallback((playerId: string, newPlayerMemory: PlayerMemory) => {
+    console.log(playerId, newPlayerMemory);
+    setPlayerMemoryStore({
+      ...playerMemoryStore,
+      [playerId]: newPlayerMemory,
+    });
+  }, [playerMemoryStore]);
+
   const [selectedGame, setSelectedGame] = useState<GameRegistration | null>(null);
   
   const handleSelectGame = useCallback((gameRegistration: GameRegistration) => {
@@ -44,7 +56,13 @@ export const Root: React.FC = () => {
       
       <div>
         {selectedGame ? (
-          <GameRunner playerRoster={playerRoster} game={selectedGame} onLeaveGame={handleLeaveGame} />
+          <GameRunner
+            game={selectedGame}  
+            playerRoster={playerRoster}
+            playerMemoryStore={playerMemoryStore}
+            setPlayerMemory={setPlayerMemory}
+            onLeaveGame={handleLeaveGame}
+          />
         ) : (
           <div>
             <div style={{ margin: 12 }}>

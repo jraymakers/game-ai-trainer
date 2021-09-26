@@ -3,18 +3,27 @@ import type { GameConfig } from '../../gameDefinition/types/GameConfig';
 import type { GameState } from '../../gameDefinition/types/GameState';
 import type { GameRegistration } from '../../gameRegistration/types/GameRegistration';
 import { RandomGameStrategy } from '../../gameStrategies/random/constants/RandomGameStrategy';
+import type { GameStrategy } from '../../gameStrategy/types/GameStrategy';
 import type { JsonObject } from '../../generalPurpose/types/Json';
 import { PlayerType } from '../../player/types/PlayerType';
+import type { PlayerMemory } from '../../playerMemory/types/PlayerMemory';
+import type { PlayerMemoryStore } from '../../playerMemory/types/PlayerMemoryStore';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
 import { GameConfigEditor } from './GameConfigEditor';
 
+const strategy: GameStrategy<JsonObject, JsonObject, JsonObject, JsonObject, JsonObject> = RandomGameStrategy;
+
 export const GameRunner: React.FC<{
-  playerRoster: PlayerRoster;
   game: GameRegistration;
+  playerRoster: PlayerRoster;
+  playerMemoryStore: PlayerMemoryStore;
+  setPlayerMemory: (playerId: string, newPlayerMemory: PlayerMemory) => void;
   onLeaveGame: () => void;
 }> = ({
-  playerRoster,
   game,
+  playerRoster,
+  playerMemoryStore,
+  setPlayerMemory,
   onLeaveGame,
 }) => {
   const gameDefinition = game.definition;
@@ -37,13 +46,29 @@ export const GameRunner: React.FC<{
       const currentPlayer = gameConfig.players[gameState.currentPlayerIndex];
       if (currentPlayer.type === PlayerType.Computer) {
         const timerId = setTimeout(() => {
-          const action = RandomGameStrategy.getNextAction(gameState, gameConfig, gameDefinition);
-          handleGameAction(action);
+          const currentPlayerMemory = playerMemoryStore[currentPlayer.id];
+          const currentPlayerMemoryForGame = currentPlayerMemory && currentPlayerMemory.memoryForGame[game.displayName] || {};
+          const { nextAction, nextPlayerMemoryForGame } =
+            strategy.getNextActionAndPlayerGameState(gameState, gameConfig, gameDefinition, currentPlayerMemoryForGame);
+          if (nextPlayerMemoryForGame) {
+            setPlayerMemory(currentPlayer.id, {
+              ...currentPlayerMemory,
+              memoryForGame: {
+                ...(currentPlayerMemory ? currentPlayerMemory.memoryForGame : {}),
+                [game.displayName]: nextPlayerMemoryForGame,
+              }
+            });
+          }
+          if (nextAction) {
+            handleGameAction(nextAction);
+          } else {
+            console.warn('no legal actions!');
+          }
         }, 500);
         return () => clearTimeout(timerId);
       }
     }
-  }, [gameDefinition, gameConfig, gameState, handleGameAction]);
+  }, [gameDefinition, gameConfig, gameState, handleGameAction, playerMemoryStore, game.displayName, setPlayerMemory]);
 
   const handleResetGame = useCallback(() => {
     if (gameConfig) {
