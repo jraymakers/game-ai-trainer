@@ -29,6 +29,14 @@ export const TicTacToeGameDefinition: GameDefinition<
     return {};
   },
 
+  getStateKey: (gameState, gameConfig) => {
+    return JSON.stringify({ gameState, gameConfig });
+  },
+
+  getActionKey: (gameAction) => {
+    return JSON.stringify(gameAction);
+  },
+
   createInitialState: () => {
     return {
       currentPlayerIndex: 0,

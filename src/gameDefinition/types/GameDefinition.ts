@@ -8,6 +8,15 @@ export type GameDefinition<TCustomGameConfig, TCustomGameState, TGameAction, TGa
   getDefaultPlayerCount: () => number;
   getDefaultCustomGameConfig: () => TCustomGameConfig;
 
+  getStateKey: (
+    gameState: GameState<TCustomGameState, TGameResult>,
+    gameConfig: GameConfig<TCustomGameConfig>,
+  ) => string;
+
+  getActionKey: (
+    gameAction: TGameAction,
+  ) => string;
+
   createInitialState: (
     gameConfig: GameConfig<TCustomGameConfig>,
   ) => GameState<TCustomGameState, TGameResult>;

@@ -46,11 +46,31 @@ export const MCTSGameStrategyDefinition: GameStrategyDefinition<
 
       const nextAction = randomItem(actions);
 
+      const stateKey = gameDefinition.getStateKey(gameState, gameConfig);
+      const actionKey = gameDefinition.getActionKey(nextAction);
+
+      const stateMemories = memory ? memory.stateMemories : {};
+      const stateMemory = stateMemories[stateKey] || { actionMemories: {} };
+      const actionMemories = stateMemory.actionMemories;
+      const actionMemory = stateMemory.actionMemories[actionKey] || { visits: 0, wins: 0 };
+
       return {
         nextAction,
         nextMemory: {
           totalActionsTaken: (memory ? memory.totalActionsTaken : 0) + 1,
-          stateMemories: (memory ? memory.stateMemories : {}),
+          stateMemories: {
+            ...stateMemories,
+            [stateKey]: {
+              ...stateMemory,
+              actionMemories: {
+                ...actionMemories,
+                [actionKey]: {
+                  ...actionMemory,
+                  visits: actionMemory.visits + 1,
+                }
+              }
+            }
+          }
         }
       };
 

@@ -32,6 +32,14 @@ export const NimGameDefinition: GameDefinition<
     };
   },
 
+  getStateKey: (gameState, gameConfig) => {
+    return JSON.stringify({ gameState, gameConfig });
+  },
+
+  getActionKey: (gameAction) => {
+    return JSON.stringify(gameAction);
+  },
+
   createInitialState: (gameConfig) => {
     return {
       currentPlayerIndex: 0,
