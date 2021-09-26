@@ -3,7 +3,7 @@ import { gameCatalog } from '../../gameCatalog/constants/gameCatalog';
 import type { GameRegistration } from '../../gameRegistration/types/GameRegistration';
 import { GameRunner } from '../../gameRunner/components/GameRunner';
 import { GameSelector } from '../../gameSelection/components/GameSelector';
-import { MonteCarloTreeSearchGameStrategyRegistration } from '../../gameStrategies/monteCarloTreeSearch/constants/MonteCarloTreeSearchGameStrategyRegistration';
+import { MCTSGameStrategyRegistration } from '../../gameStrategies/mcts/constants/MCTSGameStrategyRegistration';
 import { RandomGameStrategyRegistration } from '../../gameStrategies/random/constants/RandomGameStrategyRegistration';
 import type { Player } from '../../player/types/Player';
 import { PlayerType } from '../../player/types/PlayerType';
@@ -39,8 +39,8 @@ export const Root: React.FC = () => {
       'Tic-Tac-Toe': RandomGameStrategyRegistration,
     },
     'Computer2': {
-      'Nim': MonteCarloTreeSearchGameStrategyRegistration,
-      'Tic-Tac-Toe': MonteCarloTreeSearchGameStrategyRegistration,
+      'Nim': MCTSGameStrategyRegistration,
+      'Tic-Tac-Toe': MCTSGameStrategyRegistration,
     }
   }));
 

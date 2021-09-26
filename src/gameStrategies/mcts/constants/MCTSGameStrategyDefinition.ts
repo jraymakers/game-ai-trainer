@@ -1,14 +1,14 @@
 import type { GameStrategyDefinition } from '../../../gameStrategyDefinition/types/GameStrategyDefinition';
 import { randomItem } from '../../../generalPurpose/functions/randomItem';
 import type { JsonObject } from '../../../generalPurpose/types/Json';
-import type { MonteCarloTreeSearchGameStrategyMemory } from '../types/MonteCarloTreeSearchGameStrategyMemory';
+import type { MCTSGameStrategyMemory } from '../types/MCTSGameStrategyMemory';
 
-export const MonteCarloTreeSearchGameStrategyDefinition: GameStrategyDefinition<
+export const MCTSGameStrategyDefinition: GameStrategyDefinition<
   JsonObject,
   JsonObject,
   JsonObject,
   JsonObject,
-  MonteCarloTreeSearchGameStrategyMemory
+  MCTSGameStrategyMemory
 > = {
   getNextActionAndMemory: (gameState, gameConfig, gameDefinition, memory) => {
     const actions = gameDefinition.getLegalActions(gameState, gameConfig);
@@ -48,9 +48,7 @@ export const MonteCarloTreeSearchGameStrategyDefinition: GameStrategyDefinition<
 
       return {
         nextAction,
-        nextMemory: {
-          actionsTaken: (memory ? memory.actionsTaken : 0) + 1,
-        },
+        nextMemory: memory,
       };
 
     }
