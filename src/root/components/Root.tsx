@@ -47,7 +47,6 @@ export const Root: React.FC = () => {
   const [memoryStore, setMemoryStore] = useState<MemoryStore>(() => ({ playerMemories: {} }));
 
   const setPlayerMemory = useCallback((playerId: string, newPlayerMemory: PlayerMemory) => {
-    console.log(playerId, newPlayerMemory);
     setMemoryStore({
       ...memoryStore,
       playerMemories: {

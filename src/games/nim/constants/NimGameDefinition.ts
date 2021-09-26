@@ -1,6 +1,7 @@
 import type { GameDefinition } from '../../../gameDefinition/types/GameDefinition';
 import { nextIndex } from '../../../generalPurpose/functions/nextIndex';
 import { getNimGameResult } from '../functions/getNimGameResult';
+import { serializeNimRows } from '../functions/serializeNimRows';
 import type { NimCustomGameConfig } from '../types/NimCustomGameConfig';
 import type { NimCustomGameState } from '../types/NimCustomGameState';
 import type { NimGameAction } from '../types/NimGameAction';
@@ -33,11 +34,13 @@ export const NimGameDefinition: GameDefinition<
   },
 
   getStateKey: (gameState, gameConfig) => {
-    return JSON.stringify({ gameState, gameConfig });
+    const miserePart = gameConfig.customGameConfig.misere ? 'M' : 'N';
+    const rowsPart = serializeNimRows(gameState.customGameState.currentRows)
+    return `${miserePart}_${rowsPart}`;
   },
 
   getActionKey: (gameAction) => {
-    return JSON.stringify(gameAction);
+    return `${gameAction.rowIndex}_${gameAction.itemsToRemove}`;
   },
 
   createInitialState: (gameConfig) => {

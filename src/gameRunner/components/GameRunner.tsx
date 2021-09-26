@@ -72,6 +72,7 @@ export const GameRunner: React.FC<{
 
           if (nextActionAndMemory) {
             const { nextAction, nextMemory } = nextActionAndMemory;
+            console.log(currentPlayer.id, nextAction, nextMemory);
             if (nextMemory) {
               setPlayerMemoryRef.current(currentPlayer.id, {
                 ...currentPlayerMemory,

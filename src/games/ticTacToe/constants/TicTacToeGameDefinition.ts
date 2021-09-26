@@ -1,6 +1,7 @@
 import type { GameDefinition } from '../../../gameDefinition/types/GameDefinition';
 import { nextIndex } from '../../../generalPurpose/functions/nextIndex';
 import { getTicTacToeGameResult } from '../functions/getTicTacToeGameResult';
+import { serializeTicTacToeGrid } from '../functions/serializeTicTacToeGrid';
 import type { TicTacToeCustomGameConfig } from '../types/TicTacToeCustomGameConfig';
 import type { TicTacToeCustomGameState } from '../types/TicTacToeCustomGameState';
 import type { TicTacToeGameAction } from '../types/TicTacToeGameAction';
@@ -29,12 +30,12 @@ export const TicTacToeGameDefinition: GameDefinition<
     return {};
   },
 
-  getStateKey: (gameState, gameConfig) => {
-    return JSON.stringify({ gameState, gameConfig });
+  getStateKey: (gameState) => {
+    return serializeTicTacToeGrid(gameState.customGameState.grid);
   },
 
   getActionKey: (gameAction) => {
-    return JSON.stringify(gameAction);
+    return `${gameAction.rowIndex}_${gameAction.colIndex}`;
   },
 
   createInitialState: () => {
