@@ -1,6 +1,8 @@
 import type { GameStrategyDefinition } from '../../../gameStrategyDefinition/types/GameStrategyDefinition';
 import { randomItem } from '../../../generalPurpose/functions/randomItem';
 import type { JsonObject } from '../../../generalPurpose/types/Json';
+import { incrementMCTSStateVisits } from '../functions/incrementMCTSStateVisits';
+import { updateMCTSActionStats } from '../functions/updateMCTSActionStats';
 import type { MCTSGameStrategyMemory } from '../types/MCTSGameStrategyMemory';
 
 export const MCTSGameStrategyDefinition: GameStrategyDefinition<
@@ -43,37 +45,18 @@ export const MCTSGameStrategyDefinition: GameStrategyDefinition<
 
       // Finally, pick the next action to perform using UCB.
 
-
       const nextAction = randomItem(actions);
 
       const stateKey = gameDefinition.getStateKey(gameState, gameConfig);
       const actionKey = gameDefinition.getActionKey(nextAction);
 
-      const stateMemories = memory ? memory.stateMemories : {};
-      const stateMemory = stateMemories[stateKey] || { actionMemories: {} };
-      const actionMemories = stateMemory.actionMemories;
-      const actionMemory = stateMemory.actionMemories[actionKey] || { visits: 0, wins: 0 };
+      let nextMemory = incrementMCTSStateVisits(memory, stateKey);
+      nextMemory = updateMCTSActionStats(nextMemory, stateKey, actionKey, 0);
 
       return {
         nextAction,
-        nextMemory: {
-          totalActionsTaken: (memory ? memory.totalActionsTaken : 0) + 1,
-          stateMemories: {
-            ...stateMemories,
-            [stateKey]: {
-              ...stateMemory,
-              actionMemories: {
-                ...actionMemories,
-                [actionKey]: {
-                  ...actionMemory,
-                  visits: actionMemory.visits + 1,
-                }
-              }
-            }
-          }
-        }
+        nextMemory,
       };
-
     }
     return null;
   }

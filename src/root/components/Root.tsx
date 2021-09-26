@@ -12,6 +12,7 @@ import type { MemoryStore } from '../../memory/types/MemoryStore';
 import { PlayerRosterEditorUI } from '../../playerRoster/components/PlayerRosterEditorUI';
 import type { PlayerRoster } from '../../playerRoster/types/PlayerRoster';
 import type { PlayerStrategiesStore } from '../../playerStrategies/types/PlayerStrategiesStore';
+import { updatePlayerMemory } from '../../memory/functions/updatePlayerMemory';
 
 export const Root: React.FC = () => {
   const [playerRoster, setPlayerRoster] = useState<PlayerRoster>(() => ({
@@ -47,13 +48,7 @@ export const Root: React.FC = () => {
   const [memoryStore, setMemoryStore] = useState<MemoryStore>(() => ({ playerMemories: {} }));
 
   const setPlayerMemory = useCallback((playerId: string, newPlayerMemory: PlayerMemory) => {
-    setMemoryStore({
-      ...memoryStore,
-      playerMemories: {
-        ...memoryStore.playerMemories,
-        [playerId]: newPlayerMemory,
-      }
-    });
+    setMemoryStore(updatePlayerMemory(memoryStore, playerId, newPlayerMemory));
   }, [memoryStore]);
 
   const [selectedGame, setSelectedGame] = useState<GameRegistration | null>(null);
