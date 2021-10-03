@@ -85,4 +85,16 @@ export const NimGameDefinition: GameDefinition<
     };
   },
 
+  valueForPlayerIndex: (playerIndex, gameState) => {
+    const gameResult = gameState.gameResult;
+    if (gameResult) {
+      if (gameResult.winnerIndex === playerIndex) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    return 0;
+  },
+
 };

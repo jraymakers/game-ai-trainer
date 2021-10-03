@@ -32,4 +32,10 @@ export type GameDefinition<TCustomGameConfig, TCustomGameState, TGameAction, TGa
     gameConfig: GameConfig<TCustomGameConfig>,
   ) => GameState<TCustomGameState, TGameResult>;
 
+  valueForPlayerIndex: (
+    playerIndex: number,
+    gameState: GameState<TCustomGameState, TGameResult>,
+    gameConfig: GameConfig<TCustomGameConfig>,
+  ) => number;
+
 }>;

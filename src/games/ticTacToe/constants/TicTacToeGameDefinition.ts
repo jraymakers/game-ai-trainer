@@ -84,4 +84,19 @@ export const TicTacToeGameDefinition: GameDefinition<
     };
   },
 
+  valueForPlayerIndex: (playerIndex, gameState, gameConfig) => {
+    const gameResult = gameState.gameResult;
+    if (gameResult) {
+      if (gameResult.winnerIndex === null) { // draw
+        const { players } = gameConfig;
+        return 1 / players.length;
+      } else if (gameResult.winnerIndex === playerIndex) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    return 0;
+  },
+
 };
