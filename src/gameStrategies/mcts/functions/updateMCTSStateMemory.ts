@@ -6,15 +6,11 @@ export function updateMCTSStateMemory(
   stateKey: string,
   callback: (stateMemory: MCTSStateMemory) => MCTSStateMemory,
 ): MCTSGameStrategyMemory {
-  const definedMemory: MCTSGameStrategyMemory = memory || { stateMemories: {} }
-  const stateMemories = definedMemory.stateMemories;
-  const stateMemory = stateMemories[stateKey] || { visits: 0, actionMemories: {} };
-  const updatedStateMemory = callback(stateMemory);
+  const definedMemory: MCTSGameStrategyMemory = memory || {}
+  const currentStateMemory = definedMemory[stateKey] || { visits: 0, wins: 0 };
+  const updatedStateMemory = callback(currentStateMemory);
   return {
     ...definedMemory,
-    stateMemories: {
-      ...stateMemories,
-      [stateKey]: updatedStateMemory,
-    }
+    [stateKey]: updatedStateMemory,
   };
 }

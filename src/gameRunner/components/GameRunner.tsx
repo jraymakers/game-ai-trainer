@@ -72,7 +72,7 @@ export const GameRunner: React.FC<{
 
           if (nextActionAndMemory) {
             const { nextAction, nextMemory } = nextActionAndMemory;
-            console.log(currentPlayer.id, nextAction, nextMemory);
+            // console.log(currentPlayer.id, nextAction, nextMemory);
             if (nextMemory) {
               setPlayerMemoryRef.current(currentPlayer.id, {
                 ...currentPlayerMemory,
@@ -94,7 +94,7 @@ export const GameRunner: React.FC<{
             console.warn('strategy did not return an action!');
           }
 
-        }, 500);
+        }, 100);
         return () => clearTimeout(timerId);
       }
     }

@@ -16,10 +16,10 @@ import { updatePlayerMemory } from '../../memory/functions/updatePlayerMemory';
 
 export const Root: React.FC = () => {
   const [playerRoster, setPlayerRoster] = useState<PlayerRoster>(() => ({
-    'Computer1': { id: 'Computer1', type: PlayerType.Computer },
-    'Computer2': { id: 'Computer2', type: PlayerType.Computer },
-    'Human1': { id: 'Human1', type: PlayerType.Human },
-    'Human2': { id: 'Human2', type: PlayerType.Human },
+    'Alice': { id: 'Alice', type: PlayerType.Human },
+    'Bob': { id: 'Bob', type: PlayerType.Human },
+    'Monty': { id: 'Monty', type: PlayerType.Computer },
+    'Randy': { id: 'Randy', type: PlayerType.Computer },
   }));
 
   const handleAddNewPlayer = useCallback((newPlayer: Player) => {
@@ -35,14 +35,14 @@ export const Root: React.FC = () => {
   }, [playerRoster]);
 
   const [playerStrategiesStore, _setPlayerStrategiesStore] = useState<PlayerStrategiesStore>(() => ({
-    'Computer1': {
+    'Monty': {
+      'Nim': MCTSGameStrategyRegistration,
+      'Tic-Tac-Toe': MCTSGameStrategyRegistration,
+    },
+    'Randy': {
       'Nim': RandomGameStrategyRegistration,
       'Tic-Tac-Toe': RandomGameStrategyRegistration,
     },
-    'Computer2': {
-      'Nim': MCTSGameStrategyRegistration,
-      'Tic-Tac-Toe': MCTSGameStrategyRegistration,
-    }
   }));
 
   const [memoryStore, setMemoryStore] = useState<MemoryStore>(() => ({ playerMemories: {} }));
